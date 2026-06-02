@@ -11,18 +11,24 @@ package trabajopracticointegrador;
 public class SuscripcionLibre extends Suscripcion {
     
     // ATRIBUTOS
+    private String nombre;
     private int diasRestantes;
     
     // CONSTRUCTOR VACIO
     
     public SuscripcionLibre() {
-        
     }
     
     // CONSTRUCTOR CON PARAMETROS
     
-    public SuscripcionLibre(String descripcion, TipoPlan tipoPlan, double valor, int diasRestantes) {
-        super(descripcion, valor, tipoPlan);
+    public SuscripcionLibre(double valor, int diasRestantes) {
+        super("Suscripcion libre", valor);
         this.diasRestantes = diasRestantes;
+    }
+    
+    // GETTER Y SETTER
+    
+    public String getNombre() {
+        return nombre;
     }
 }

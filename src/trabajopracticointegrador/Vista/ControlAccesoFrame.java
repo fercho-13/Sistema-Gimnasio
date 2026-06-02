@@ -8,6 +8,11 @@ import trabajopracticointegrador.Socio;
 import javax.swing.JDialog;
 import javax.swing.SwingUtilities;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.BorderFactory;
+import java.awt.GridLayout;
+import java.awt.BorderLayout;
+import javax.swing.JButton;
 
 
 /**
@@ -69,16 +74,147 @@ public class ControlAccesoFrame extends javax.swing.JFrame implements ControlAcc
     @Override
     public void accesoConcedido(Socio socio) {
         SwingUtilities.invokeLater(() -> {
-            JDialog dialog = new JDialog(this, "Acceso concedido", true);
             
-            
+            // DATOS DEL SOCIO 
+            JDialog dialog = new JDialog(this, "Datos de socio", true);
+            dialog.setSize(350, 400);
+            dialog.setLayout(new BorderLayout());
+
+            // panel principal con padding
+            JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10));
+            panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+            // datos de Persona
+            panel.add(new JLabel("Nombre:"));
+            panel.add(new JLabel(socio.getNombre()));
+
+            panel.add(new JLabel("Apellido:"));
+            panel.add(new JLabel(socio.getApellido()));
+
+            panel.add(new JLabel("DNI:"));
+            panel.add(new JLabel(String.valueOf(socio.getDNI())));
+
+            if (socio.isActivo()) {
+                panel.add(new JLabel("Socio activo"));
+            } else {
+                panel.add(new JLabel("Socio inactivo"));
+            }
+
+            // datos de Suscripcion
+            panel.add(new JLabel("Plan:"));
+            panel.add(new JLabel(socio.getSuscripcion().getDescripcion()));
+
+            panel.add(new JLabel("Vencimiento:"));
+            panel.add(new JLabel(socio.getSuscripcion().getFechaFin().toString()));
+
+            // boton cerrar
+            JButton btnCerrar = new JButton("Cerrar");
+            btnCerrar.addActionListener(e -> dialog.dispose());
+
+            dialog.add(panel, BorderLayout.CENTER);
+            dialog.add(btnCerrar, BorderLayout.SOUTH);
+
+            dialog.setLocationRelativeTo(this);
             dialog.setVisible(true);
         });
     }
     
     @Override
     public void accesoDenegado(String mensajeError) {
-        
+        SwingUtilities.invokeLater(() -> {
+            
+        }); 
+    }
+    
+    @Override
+    public void accesoParcial(Socio socio) {
+        SwingUtilities.invokeLater(() -> {
+            
+            // DATOS DEL SOCIO
+            JDialog dialog = new JDialog(this, "Datos de socio", true);
+            dialog.setSize(350, 400);
+            dialog.setLayout(new BorderLayout());
+
+            // panel principal con padding
+            JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10));
+            panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+            // datos de Persona
+            panel.add(new JLabel("Nombre:"));
+            panel.add(new JLabel(socio.getNombre()));
+
+            panel.add(new JLabel("Apellido:"));
+            panel.add(new JLabel(socio.getApellido()));
+
+            panel.add(new JLabel("DNI:"));
+            panel.add(new JLabel(String.valueOf(socio.getDNI())));
+
+            if (socio.isActivo()) {
+                panel.add(new JLabel("Socio activo"));
+            } else {
+                panel.add(new JLabel("Socio inactivo"));
+            }
+
+            // datos de Suscripcion
+            panel.add(new JLabel("Plan:"));
+            panel.add(new JLabel(socio.getSuscripcion().getDescripcion()));
+
+            panel.add(new JLabel("Vencimiento:"));
+            panel.add(new JLabel(socio.getSuscripcion().getFechaFin().toString()));
+
+            // boton cerrar
+            JButton btnCerrar = new JButton("Cerrar");
+            btnCerrar.addActionListener(e -> dialog.dispose());
+
+            dialog.add(panel, BorderLayout.CENTER);
+            dialog.add(btnCerrar, BorderLayout.SOUTH);
+
+            dialog.setLocationRelativeTo(this);
+            dialog.setVisible(true);
+        });
+    }
+    
+    public void mostrarDatosSocio(Socio socio) {
+        JDialog dialog = new JDialog(this, "Datos de socio", true);
+        dialog.setSize(350, 400);
+        dialog.setLayout(new BorderLayout());
+
+        // panel principal con padding
+        JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10));
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        // datos de Persona
+        panel.add(new JLabel("Nombre:"));
+        panel.add(new JLabel(socio.getNombre()));
+
+        panel.add(new JLabel("Apellido:"));
+        panel.add(new JLabel(socio.getApellido()));
+
+        panel.add(new JLabel("DNI:"));
+        panel.add(new JLabel(String.valueOf(socio.getDNI())));
+
+        if (socio.isActivo()) {
+            panel.add(new JLabel("Socio activo"));
+        } else {
+            panel.add(new JLabel("Socio inactivo"));
+        }
+
+        // datos de Suscripcion
+        panel.add(new JLabel("Plan:"));
+        panel.add(new JLabel(socio.getSuscripcion().getDescripcion()));
+
+        panel.add(new JLabel("Vencimiento:"));
+        panel.add(new JLabel(socio.getSuscripcion().getFechaFin().toString()));
+
+        // boton cerrar
+        JButton btnCerrar = new JButton("Cerrar");
+        btnCerrar.addActionListener(e -> dialog.dispose());
+
+        dialog.add(panel, BorderLayout.CENTER);
+        dialog.add(btnCerrar, BorderLayout.SOUTH);
+
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
     }
     
     /**

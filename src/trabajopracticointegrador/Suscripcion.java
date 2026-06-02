@@ -17,7 +17,6 @@ public abstract class Suscripcion {
     private boolean activo;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
-    private TipoPlan tipoPlan;
 
     
     // CONSTRUCTOR VACIO
@@ -28,10 +27,9 @@ public abstract class Suscripcion {
     
     // CONSTRUCTOR CON PARAMETROS
     
-    public Suscripcion(String descripcion, double valor, TipoPlan tipoPlan) {
+    public Suscripcion(String descripcion, double valor) {
         this.descripcion = descripcion;
         this.valor = valor;
-        this.tipoPlan = tipoPlan;
         this.activo = true;
         this.fechaInicio = LocalDate.now();
         this.fechaFin = null;
@@ -57,10 +55,6 @@ public abstract class Suscripcion {
 
     public LocalDate getFechaFin() {
         return fechaFin;
-    }
-    
-    public TipoPlan getTipoPlan() {
-        return tipoPlan;
     }
     
     // SETTERS

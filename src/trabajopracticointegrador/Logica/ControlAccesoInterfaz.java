@@ -18,4 +18,7 @@ public interface ControlAccesoInterfaz {
     
     // SOCIO NO PUEDE INGRESAR POR ACCESO DENEGADO
     void accesoDenegado(String mensajeError);
+    
+    // SOCIO PUEDE INGRESAR PERO DEBE ABONAR LA SUSCRIPCION
+    void accesoParcial(Socio socio);
 }

@@ -17,13 +17,12 @@ public class SuscripcionCupo extends Suscripcion {
     // CONSTRUCTOR VACIO
     
     public SuscripcionCupo() {
-        
     }
     
     // CONSTRUCTOR CON PARAMETROS
     
-    public SuscripcionCupo(String descripcion, TipoPlan tipoPlan, double valor, int cuposRestantes) {
-        super(descripcion, valor, tipoPlan);
+    public SuscripcionCupo(double valor, int cuposRestantes) {
+        super("Suscripcion por cupos", valor);
         this.cuposRestantes = cuposRestantes;
     }
 }
