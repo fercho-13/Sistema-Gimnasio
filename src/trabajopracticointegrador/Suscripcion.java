@@ -86,4 +86,6 @@ public abstract class Suscripcion {
     public void activar() {
         this.activo = true;
     }
+    
+    
 }

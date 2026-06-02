@@ -3,12 +3,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package trabajopracticointegrador.Vista;
+import trabajopracticointegrador.Logica.ControlAccesoInterfaz;
+import trabajopracticointegrador.Socio;
+import javax.swing.JDialog;
+import javax.swing.SwingUtilities;
+import javax.swing.JLabel;
+
 
 /**
  *
  * @author fermi
  */
-public class ControlAccesoFrame extends javax.swing.JFrame {
+public class ControlAccesoFrame extends javax.swing.JFrame implements ControlAccesoInterfaz {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ControlAccesoFrame.class.getName());
 
@@ -28,22 +34,53 @@ public class ControlAccesoFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        btnIniciarSimulacion = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        btnIniciarSimulacion.setText("Iniciar simulacion");
+        btnIniciarSimulacion.addActionListener(this::btnIniciarSimulacionActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(161, 161, 161)
+                .addComponent(btnIniciarSimulacion)
+                .addContainerGap(117, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(136, 136, 136)
+                .addComponent(btnIniciarSimulacion)
+                .addContainerGap(141, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnIniciarSimulacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSimulacionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnIniciarSimulacionActionPerformed
+
+    // METODOS D DE LA INTERFAZ
+    @Override
+    public void accesoConcedido(Socio socio) {
+        SwingUtilities.invokeLater(() -> {
+            JDialog dialog = new JDialog(this, "Acceso concedido", true);
+            
+            
+            dialog.setVisible(true);
+        });
+    }
+    
+    @Override
+    public void accesoDenegado(String mensajeError) {
+        
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -70,5 +107,6 @@ public class ControlAccesoFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnIniciarSimulacion;
     // End of variables declaration//GEN-END:variables
 }

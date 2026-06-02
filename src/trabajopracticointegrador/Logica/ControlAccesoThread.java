@@ -44,7 +44,7 @@ public class ControlAccesoThread extends Thread {
                     int indiceRandom = random.nextInt(socios.length);
                     Socio socioRandom = socios[indiceRandom];
                     // AGREGAR METODO QUE VERIFIQUE QUE UNA SUSCRIPCION TIENE ACCESO VALIDO
-                    if (socioRandom.getSuscripcion() != null && socioRandom.getSuscripcion().) {
+                    if (socioRandom.getSuscripcion() != null && socioRandom.getSuscripcion().isActivo()) {
                         listener.accesoConcedido(socioRandom);
                     } else {
                         listener.accesoDenegado(socioRandom.getNombre() + " " + socioRandom.getApellido() + " debe abonar la suscripcion");
