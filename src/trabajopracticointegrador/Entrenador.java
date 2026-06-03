@@ -22,8 +22,8 @@ public class Entrenador extends Empleado {
     
     // CONSTRUCTOR CON PARAMETROS
 
-    public Entrenador(String matricula, LocalDate fechaMatriculaVencimiento, Cargo cargo, String nombre, String apellido, int DNI, String direccion, String numeroTelefono) {
-        super(cargo, nombre, apellido, DNI, direccion, numeroTelefono);
+    public Entrenador(String matricula, LocalDate fechaMatriculaVencimiento, String nombre, String apellido, String DNI, String direccion, String numeroTelefono) {
+        super(nombre, apellido, DNI, direccion, numeroTelefono);
         this.matricula = matricula;
         this.fechaMatriculaVencimiento = fechaMatriculaVencimiento;
     }

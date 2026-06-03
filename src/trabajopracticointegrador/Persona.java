@@ -13,7 +13,7 @@ public abstract class Persona {
     // ATRIBUTOS
     protected String nombre;
     protected String apellido;
-    protected int DNI;
+    protected String DNI;
     protected String direccion;
     protected String numeroTelefono;
     
@@ -25,7 +25,7 @@ public abstract class Persona {
     
     // CONSTRUCTOR CON PARAMETROS
 
-    public Persona(String nombre, String apellido, int DNI, String direccion, String numeroTelefono) {
+    public Persona(String nombre, String apellido, String DNI, String direccion, String numeroTelefono) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.DNI = DNI;
@@ -43,7 +43,7 @@ public abstract class Persona {
         return apellido;
     }
 
-    public int getDNI() {
+    public String getDNI() {
         return DNI;
     }
 
@@ -65,7 +65,7 @@ public abstract class Persona {
         this.apellido = apellido;
     }
 
-    public void setDNI(int DNI) {
+    public void setDNI(String DNI) {
         this.DNI = DNI;
     }
 

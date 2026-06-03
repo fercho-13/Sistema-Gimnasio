@@ -43,13 +43,11 @@ public class Conexion {
             Class.forName("com.mysql.cj.jdbc.Driver");
             
             this.URL = "jdbc:mysql://"+servidor+":3307/"+database;
-            conn = DriverManager.getConnection(this.URL, user, password);
-            
-            System.out.println("Conexion a Base de datos " + this.URL + "... Exitosa.");
+            conn = DriverManager.getConnection(this.URL, user, password);            
         } catch(SQLException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         } catch (ClassNotFoundException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
     }
     
@@ -62,7 +60,6 @@ public class Conexion {
     public Connection cerrarConexion() {
         try {
             conn.close();
-            System.out.println("Cerrando conexion " + URL + " . . . OK");
         } catch (SQLException e) {
             System.out.println(e);
         } 

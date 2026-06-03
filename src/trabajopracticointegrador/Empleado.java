@@ -15,7 +15,6 @@ public class Empleado extends Persona {
     private LocalDate fechaIngreso;
     private LocalDate fechaEgreso;
     private boolean activo;
-    private Cargo cargo;
     
     // CONSTRUCTOR VACIO
     public Empleado() {
@@ -24,22 +23,13 @@ public class Empleado extends Persona {
     
     // CONSTRUCTOR SIN PARAMETROS (SIN CARGO)
 
-    public Empleado(String nombre, String apellido, int DNI, String direccion, String numeroTelefono) {
+    public Empleado(String nombre, String apellido, String DNI, String direccion, String numeroTelefono) {
         super(nombre, apellido, DNI, direccion, numeroTelefono);
         this.fechaIngreso = LocalDate.now();
         this.fechaEgreso = null;
         this.activo = true;
     }
     
-    // CONSTRUCTOR CON PARAMETROS (CON CARGO)
-
-    public Empleado(Cargo cargo, String nombre, String apellido, int DNI, String direccion, String numeroTelefono) {
-        super(nombre, apellido, DNI, direccion, numeroTelefono);
-        this.cargo = cargo;
-        this.fechaIngreso = LocalDate.now();
-        this.fechaEgreso = null;
-        this.activo = true;
-    }
     
     // GETTERS
     
@@ -54,10 +44,6 @@ public class Empleado extends Persona {
     public boolean isActivo() {
         return activo;
     }
-
-    public Cargo getCargo() {
-        return cargo;
-    }
     
     // SETTERS
     
@@ -67,10 +53,6 @@ public class Empleado extends Persona {
     
     public void setFechaEgreso(LocalDate fechaEgreso) {
         this.fechaEgreso = fechaEgreso;
-    }
-    
-    public void setCargo(Cargo cargo) {
-        this.cargo = cargo;
     }
     
     // METODOS

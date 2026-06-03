@@ -46,7 +46,7 @@ public class ControlAccesoThread extends Thread {
                     if (socioRandom.getSuscripcion() != null && socioRandom.getSuscripcion().isActivo()) {
                         listener.accesoConcedido(socioRandom);
                     } else {
-                        listener.accesoDenegado(socioRandom.getNombre() + " " + socioRandom.getApellido() + " debe abonar la suscripcion");
+                        listener.accesoParcial(socioRandom);
                     }
                 }
             } catch (InterruptedException e) {

@@ -8,6 +8,8 @@ package trabajopracticointegrador.ConexionDB;
  *
  * @author fermi
  */
-public class EmpleadoDML {
+
+// ARCHIVO DESTINADO A LAS CONSULTAS SQL DE EMPLEADOS (Patron DAO: Data Access Object)
+public class EmpleadoDAO {
     
 }

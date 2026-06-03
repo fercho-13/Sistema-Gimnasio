@@ -6,13 +6,11 @@ package trabajopracticointegrador.Vista;
 import trabajopracticointegrador.Logica.ControlAccesoInterfaz;
 import trabajopracticointegrador.Socio;
 import javax.swing.JDialog;
-import javax.swing.SwingUtilities;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.BorderFactory;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
-import javax.swing.JButton;
 
 
 /**
@@ -70,120 +68,63 @@ public class ControlAccesoFrame extends javax.swing.JFrame implements ControlAcc
         // TODO add your handling code here:
     }//GEN-LAST:event_btnIniciarSimulacionActionPerformed
 
-    // METODOS D DE LA INTERFAZ
+    // METODOS DE DE LA INTERFAZ
     @Override
     public void accesoConcedido(Socio socio) {
-        SwingUtilities.invokeLater(() -> {
-            
-            // DATOS DEL SOCIO 
-            JDialog dialog = new JDialog(this, "Datos de socio", true);
-            dialog.setSize(350, 400);
-            dialog.setLayout(new BorderLayout());
+        
+        // DATOS DEL SOCIO 
+        JDialog dialog = new JDialog(this, "Datos de socio", true);
+        dialog.setSize(350, 400);
+        dialog.setLayout(new BorderLayout());
+        
+        // PANEL PRINCIPAL CON PADDING
+        JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10));
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        
+        mostrarDatosSocio(socio, panel);
 
-            // panel principal con padding
-            JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10));
-            panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
-            // datos de Persona
-            panel.add(new JLabel("Nombre:"));
-            panel.add(new JLabel(socio.getNombre()));
-
-            panel.add(new JLabel("Apellido:"));
-            panel.add(new JLabel(socio.getApellido()));
-
-            panel.add(new JLabel("DNI:"));
-            panel.add(new JLabel(String.valueOf(socio.getDNI())));
-
-            if (socio.isActivo()) {
-                panel.add(new JLabel("Socio activo"));
-            } else {
-                panel.add(new JLabel("Socio inactivo"));
-            }
-
-            // datos de Suscripcion
-            panel.add(new JLabel("Plan:"));
-            panel.add(new JLabel(socio.getSuscripcion().getDescripcion()));
-
-            panel.add(new JLabel("Vencimiento:"));
-            panel.add(new JLabel(socio.getSuscripcion().getFechaFin().toString()));
-
-            // boton cerrar
-            JButton btnCerrar = new JButton("Cerrar");
-            btnCerrar.addActionListener(e -> dialog.dispose());
-
-            dialog.add(panel, BorderLayout.CENTER);
-            dialog.add(btnCerrar, BorderLayout.SOUTH);
-
-            dialog.setLocationRelativeTo(this);
-            dialog.setVisible(true);
-        });
+        // agregar boton de cierre
     }
     
     @Override
     public void accesoDenegado(String mensajeError) {
-        SwingUtilities.invokeLater(() -> {
-            
-        }); 
+        JDialog dialog = new JDialog(this, "", true);
+        dialog.setSize(350, 400);
+        dialog.setLayout(new BorderLayout());
+        
+        // PANEL PRINCIPAL CON PADDING
+        JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10));
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        
+        // MENSAJE DE ERROR
+        panel.add(new JLabel(mensajeError));
+
+        // agregar boton de cierre
     }
     
     @Override
     public void accesoParcial(Socio socio) {
-        SwingUtilities.invokeLater(() -> {
-            
-            // DATOS DEL SOCIO
-            JDialog dialog = new JDialog(this, "Datos de socio", true);
-            dialog.setSize(350, 400);
-            dialog.setLayout(new BorderLayout());
-
-            // panel principal con padding
-            JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10));
-            panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
-            // datos de Persona
-            panel.add(new JLabel("Nombre:"));
-            panel.add(new JLabel(socio.getNombre()));
-
-            panel.add(new JLabel("Apellido:"));
-            panel.add(new JLabel(socio.getApellido()));
-
-            panel.add(new JLabel("DNI:"));
-            panel.add(new JLabel(String.valueOf(socio.getDNI())));
-
-            if (socio.isActivo()) {
-                panel.add(new JLabel("Socio activo"));
-            } else {
-                panel.add(new JLabel("Socio inactivo"));
-            }
-
-            // datos de Suscripcion
-            panel.add(new JLabel("Plan:"));
-            panel.add(new JLabel(socio.getSuscripcion().getDescripcion()));
-
-            panel.add(new JLabel("Vencimiento:"));
-            panel.add(new JLabel(socio.getSuscripcion().getFechaFin().toString()));
-
-            // boton cerrar
-            JButton btnCerrar = new JButton("Cerrar");
-            btnCerrar.addActionListener(e -> dialog.dispose());
-
-            dialog.add(panel, BorderLayout.CENTER);
-            dialog.add(btnCerrar, BorderLayout.SOUTH);
-
-            dialog.setLocationRelativeTo(this);
-            dialog.setVisible(true);
-        });
-    }
-    
-    public void mostrarDatosSocio(Socio socio) {
+       
+        // CREACION DE NUEVA VENTANA DIALOG
         JDialog dialog = new JDialog(this, "Datos de socio", true);
         dialog.setSize(350, 400);
         dialog.setLayout(new BorderLayout());
 
-        // panel principal con padding
+        // PANEL PRINCIPAL CON PADDING
         JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        
+        mostrarDatosSocio(socio, panel);
+        
+        // MENSAJE DE AVISO
+        panel.add(new JLabel("Debe abonar la suscripcion"));
 
-        // datos de Persona
+        // agregar boton de cierre
+    }
+    
+    public void mostrarDatosSocio(Socio socio, JPanel panel) {
+        
+        // DATOS DE PERSONA
         panel.add(new JLabel("Nombre:"));
         panel.add(new JLabel(socio.getNombre()));
 
@@ -199,22 +140,12 @@ public class ControlAccesoFrame extends javax.swing.JFrame implements ControlAcc
             panel.add(new JLabel("Socio inactivo"));
         }
 
-        // datos de Suscripcion
+        // DATOS DE SUSCRIPCION
         panel.add(new JLabel("Plan:"));
         panel.add(new JLabel(socio.getSuscripcion().getDescripcion()));
 
         panel.add(new JLabel("Vencimiento:"));
         panel.add(new JLabel(socio.getSuscripcion().getFechaFin().toString()));
-
-        // boton cerrar
-        JButton btnCerrar = new JButton("Cerrar");
-        btnCerrar.addActionListener(e -> dialog.dispose());
-
-        dialog.add(panel, BorderLayout.CENTER);
-        dialog.add(btnCerrar, BorderLayout.SOUTH);
-
-        dialog.setLocationRelativeTo(this);
-        dialog.setVisible(true);
     }
     
     /**

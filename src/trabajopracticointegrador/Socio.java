@@ -3,14 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package trabajopracticointegrador;
-import trabajopracticointegrador.Logica.ControlAcceso;
 import java.time.LocalDate;
 
 /**
  *
  * @author fermi
  */
-public class Socio extends Persona implements ControlAcceso {
+public class Socio extends Persona {
     
     // ATRIBUTOS
     private LocalDate fechaAlta;
@@ -24,7 +23,7 @@ public class Socio extends Persona implements ControlAcceso {
     
     // CONSTRUCTOR CON PARAMETROS (SIN SUSCRIPCION)
     
-    public Socio(String nombre, String apellido, int DNI, String direccion, String numeroTelefono) {
+    public Socio(String nombre, String apellido, String DNI, String direccion, String numeroTelefono) {
         super(nombre, apellido, DNI, direccion, numeroTelefono);
         this.activo = true;
         this.fechaAlta = LocalDate.now();
@@ -32,7 +31,7 @@ public class Socio extends Persona implements ControlAcceso {
     
     // CONSTRUCTOR CON PARAMETROS (CON SUSCRIPCION)
     
-    public Socio(String nombre, String apellido, int DNI, String direccion, String numeroTelefono, Suscripcion suscripcion) {
+    public Socio(String nombre, String apellido, String DNI, String direccion, String numeroTelefono, Suscripcion suscripcion) {
         super(nombre, apellido, DNI, direccion, numeroTelefono);
         this.suscripcion = suscripcion;
         this.activo = true;
