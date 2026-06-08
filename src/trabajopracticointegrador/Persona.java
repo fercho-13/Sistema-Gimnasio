@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package trabajopracticointegrador;
+import java.time.LocalDate;
 
 /**
  *
@@ -16,6 +17,7 @@ public abstract class Persona {
     protected String DNI;
     protected String direccion;
     protected String numeroTelefono;
+    protected LocalDate fechaNacimiento;
     
     // CONSTRUCTOR VACIO
     
@@ -55,6 +57,10 @@ public abstract class Persona {
         return numeroTelefono;
     }
     
+    public LocalDate getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+    
     // SETTERS 
 
     public void setNombre(String nombre) {
@@ -75,6 +81,10 @@ public abstract class Persona {
 
     public void setNumeroTelefono(String numeroTelefono) {
         this.numeroTelefono = numeroTelefono;
+    }
+    
+    public void setFechaNacimiento(LocalDate fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
     }
     
 }

@@ -71,6 +71,10 @@ public abstract class Suscripcion {
         this.fechaFin = fechaFin;
     }
     
+    public void setActivo (boolean activo) {
+        this.activo = activo;
+    }
+    
     // METODOS
     
     public void desactivar() {

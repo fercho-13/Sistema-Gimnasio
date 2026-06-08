@@ -19,34 +19,20 @@ public class Conexion {
     // ATRIBUTOS
     Connection conector = null;
     
-    private String servidor;
-    private String database;
-    private String user;
-    private String password;
     private String URL;
     private Connection conn;
     private ResultSet rs;
     private Statement stm;
     
     // CONSTRUCTOR
-    public Conexion() {
-        
-    }
-    
     public Conexion(String servidor, String database, String user, String password) {
         
         try {
-            this.servidor = servidor;
-            this.database = database;
-            this.user = user;
-            this.password = password;
             Class.forName("com.mysql.cj.jdbc.Driver");
             
-            this.URL = "jdbc:mysql://"+servidor+":3307/"+database;
-            conn = DriverManager.getConnection(this.URL, user, password);            
-        } catch(SQLException e) {
-            System.out.println(e.getMessage());
-        } catch (ClassNotFoundException e) {
+            this.URL = "jdbc:mysql://localhost:3307/sistema_gimnasio";
+            conn = DriverManager.getConnection(this.URL, "root", "");            
+        } catch(SQLException | ClassNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }

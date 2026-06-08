@@ -15,6 +15,7 @@ public class Empleado extends Persona {
     private LocalDate fechaIngreso;
     private LocalDate fechaEgreso;
     private boolean activo;
+    private String cargo;
     
     // CONSTRUCTOR VACIO
     public Empleado() {
@@ -53,6 +54,10 @@ public class Empleado extends Persona {
     
     public void setFechaEgreso(LocalDate fechaEgreso) {
         this.fechaEgreso = fechaEgreso;
+    }
+    
+    public void setActivo (boolean setActivo) {
+        this.activo = activo;
     }
     
     // METODOS

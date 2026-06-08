@@ -11,7 +11,6 @@ package trabajopracticointegrador;
 public class SuscripcionLibre extends Suscripcion {
     
     // ATRIBUTOS
-    private String nombre;
     private int diasRestantes;
     
     // CONSTRUCTOR VACIO
