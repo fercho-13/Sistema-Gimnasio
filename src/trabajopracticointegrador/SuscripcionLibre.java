@@ -27,7 +27,11 @@ public class SuscripcionLibre extends Suscripcion {
     
     // GETTER Y SETTER
     
-    public String getNombre() {
-        return nombre;
+    public int getDiasRestantes() {
+        return diasRestantes;
+    }
+    
+    public void setDiasRestantes(int diasRestantes) {
+        this.diasRestantes = diasRestantes;
     }
 }

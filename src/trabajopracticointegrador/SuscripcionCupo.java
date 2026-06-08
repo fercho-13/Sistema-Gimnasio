@@ -25,4 +25,15 @@ public class SuscripcionCupo extends Suscripcion {
         super("Suscripcion por cupos", valor);
         this.cuposRestantes = cuposRestantes;
     }
+    
+    // GETTER Y SETTER
+
+    public int getCuposRestantes() {
+        return cuposRestantes;
+    }
+
+    public void setCuposRestantes(int cuposRestantes) {
+        this.cuposRestantes = cuposRestantes;
+    }
+    
 }

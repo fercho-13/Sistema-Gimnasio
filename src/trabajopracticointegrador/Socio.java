@@ -12,6 +12,7 @@ import java.time.LocalDate;
 public class Socio extends Persona {
     
     // ATRIBUTOS
+    private int id_socio;
     private LocalDate fechaAlta;
     private Suscripcion suscripcion;
     private boolean activo;
@@ -39,6 +40,10 @@ public class Socio extends Persona {
     }
     
     // GETTERS 
+    
+    public int getId_Socio() {
+        return id_socio;
+    }
 
     public LocalDate getFechaAlta() {
         return fechaAlta;
@@ -54,6 +59,10 @@ public class Socio extends Persona {
     
     // SETTERS
 
+    public void setId_Socio(int id_socio) {
+        this.id_socio = id_socio;
+    }
+    
     public void setFechaAlta(LocalDate fechaAlta) {
         this.fechaAlta = fechaAlta;
     }

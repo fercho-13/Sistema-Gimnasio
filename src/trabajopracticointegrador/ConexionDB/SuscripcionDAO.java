@@ -4,10 +4,72 @@
  */
 package trabajopracticointegrador.ConexionDB;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import trabajopracticointegrador.Suscripcion;
+import trabajopracticointegrador.SuscripcionLibre;
+import trabajopracticointegrador.SuscripcionCupo;
+import java.lang.Integer;
+import java.time.temporal.ChronoUnit;
+
 /**
  *
  * @author fermi
  */
 public class SuscripcionDAO {
     
+    // ATRIBUTOS
+    private Conexion conn;
+    private ResultSet rs;
+    
+    // CONSTRUCTOR
+    public SuscripcionDAO() {
+        
+    }
+    
+    // CONSULTAR SOCIO POR DNI
+    public Suscripcion obtenerSuscripcionActiva(int id_socio) throws SQLException {
+        
+            String consulta = "SELECT * FROM Suscripciones"
+                    + " WHERE SocioId = ? AND Activo = true";
+            
+            //Suscripcion suscripcion = null; // SI DEVUELVE NULL, NO SE PUDIERON ACCEDER A LOS DATOS Y DARA ERROR
+            
+            try (Connection connection = conn.getConexion()) {
+                
+                PreparedStatement stm = connection.prepareStatement(consulta);
+                
+                stm.setInt(1, id_socio);
+                
+                try (ResultSet rs = stm.executeQuery()) {
+                
+                    if (rs.next()) {
+                        
+                        Integer cuposRestantes = null;
+                        int cuposLectura = rs.getInt("CuposRestantes");
+                        
+                        // COMO JDBC NO PUEDE DEVOLVER VALORES NULL, VERIFICA CUAL FUE EL ULTIMO DATO LEIDO DE LA BD
+                        if (!rs.wasNull()) {
+                            // SI TENIA UN VALOR NO NULO, ENTONCES ES DEL TIPO SUSCRIPCION POR CUPOS
+                            cuposRestantes = cuposLectura;
+                        }
+                        
+                        if (cuposRestantes == null) {
+                            SuscripcionLibre suscripcion = new SuscripcionLibre();
+                            suscripcion.setFechaFin(rs.getObject("FechaFin", LocalDate));
+                            // CALCULA LOS DIAS RESTANTES EN BASE A LA DIFERENCIA ENTRE FECHA ACTUAL Y FECHA FIN DE LA SUSCRIPCION
+                            suscripcion.setDiasRestantes(ChronoUnit.DAYS.between(LocalDate.now(), suscripcion.getFechaFin()));
+                        } else {
+                            SuscripcionCupo suscripcion = new SuscripcionCupo();
+                            suscripcion.setCuposRestantes(cuposRestantes);
+                        }
+                    }
+                
+                }
+            }
+            return socio;
+    }
 }

@@ -35,7 +35,7 @@ public class SocioDAO {
                     + " INNER JOIN Socios s ON p.PersonaId = s.PersonaId"
                     + " WHERE DNI = ?";
             
-            Socio socio = null;
+            socio = null;
             
             try (Connection connection = conn.getConexion()) {
                 
@@ -47,6 +47,7 @@ public class SocioDAO {
                 
                     if (rs.next()) {
                         socio = new Socio();
+                        socio.setId_Socio(rs.getInt("SocioId"));
                         socio.setNombre(rs.getString("Nombre"));
                         socio.setApellido(rs.getString("Apellido"));
                         socio.setDNI(rs.getString("DNI"));
