@@ -3,19 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/fermi/dev/proyects/active/TrabajoPracticointegrador/src/trabajopracticointegrador/ConexionDB/SocioDAO.java</file>
-            <file>file:/C:/Users/fermi/dev/proyects/active/TrabajoPracticointegrador/src/trabajopracticointegrador/ConexionDB/EmpleadoDAO.java</file>
-            <file>file:/C:/Users/fermi/dev/proyects/active/TrabajoPracticointegrador/src/trabajopracticointegrador/Entrenador.java</file>
-            <file>file:/C:/Users/fermi/dev/proyects/active/TrabajoPracticointegrador/src/trabajopracticointegrador/SuscripcionLibre.java</file>
-            <file>file:/C:/Users/fermi/dev/proyects/active/TrabajoPracticointegrador/src/trabajopracticointegrador/Suscripcion.java</file>
-            <file>file:/C:/Users/fermi/dev/proyects/active/TrabajoPracticointegrador/src/trabajopracticointegrador/SuscripcionCupo.java</file>
-            <file>file:/C:/Users/fermi/dev/proyects/active/TrabajoPracticointegrador/src/trabajopracticointegrador/Empleado.java</file>
-            <file>file:/C:/Users/fermi/dev/proyects/active/TrabajoPracticointegrador/src/trabajopracticointegrador/Persona.java</file>
-            <file>file:/C:/Users/fermi/dev/proyects/active/TrabajoPracticointegrador/src/trabajopracticointegrador/Socio.java</file>
-            <file>file:/C:/Users/fermi/dev/proyects/active/TrabajoPracticointegrador/src/trabajopracticointegrador/Logica/ControlAccesoInterfaz.java</file>
-            <file>file:/C:/Users/fermi/dev/proyects/active/TrabajoPracticointegrador/src/trabajopracticointegrador/Logica/ControlAcceso.java</file>
-            <file>file:/C:/Users/fermi/dev/proyects/active/TrabajoPracticointegrador/src/trabajopracticointegrador/ConexionDB/Conexion.java</file>
-            <file>file:/C:/Users/fermi/dev/proyects/active/TrabajoPracticointegrador/src/trabajopracticointegrador/ConexionDB/SuscripcionDAO.java</file>
+            <file>file:/C:/Users/danny/OneDrive/Documentos/Programacion3/Sistema-Gimnasio/src/trabajopracticointegrador/Vista/ControlAccesoFrame.java</file>
+            <file>file:/C:/Users/danny/OneDrive/Documentos/Programacion3/Sistema-Gimnasio/src/trabajopracticointegrador/Vista/ListaEmpleadosFrame.java</file>
+            <file>file:/C:/Users/danny/OneDrive/Documentos/Programacion3/Sistema-Gimnasio/src/trabajopracticointegrador/Vista/ListaSociosFrame.java</file>
+            <file>file:/C:/Users/danny/OneDrive/Documentos/Programacion3/Sistema-Gimnasio/src/trabajopracticointegrador/ConexionDB/SuscripcionDAO.java</file>
+            <file>file:/C:/Users/danny/OneDrive/Documentos/Programacion3/Sistema-Gimnasio/src/trabajopracticointegrador/Persona.java</file>
+            <file>file:/C:/Users/danny/OneDrive/Documentos/Programacion3/Sistema-Gimnasio/src/trabajopracticointegrador/Socio.java</file>
+            <file>file:/C:/Users/danny/OneDrive/Documentos/Programacion3/Sistema-Gimnasio/src/trabajopracticointegrador/Vista/MenuPrincipalFrame.java</file>
         </group>
     </open-files>
 </project-private>
