@@ -12,6 +12,8 @@ import java.time.LocalDate;
 public abstract class Suscripcion {
     
     // ATRIBUTOS
+    private int id_suscripcion;
+    private int id_plan;
     private String descripcion;
     private double valor;
     private boolean activo;
@@ -36,7 +38,15 @@ public abstract class Suscripcion {
     }
     
     // GETTERS
+    
+    public int getId_Suscripcion() {
+        return id_suscripcion;
+    }
 
+    public int getId_plan() {
+        return id_plan;
+    }
+    
     public String getDescripcion() {
         return descripcion;
     }
@@ -58,13 +68,25 @@ public abstract class Suscripcion {
     }
     
     // SETTERS
+    
+    public void setId_Suscripcion(int id_suscripcion) {
+        this.id_suscripcion = id_suscripcion;
+    }
 
+    public void setId_plan(int id_plan) {
+        this.id_plan = id_plan;
+    }
+    
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
 
     public void setValor(double valor) {
         this.valor = valor;
+    }
+    
+    public void setFechaInicio(LocalDate fechaInicio) {
+        this.fechaInicio = fechaInicio;
     }
 
     public void setFechaFin(LocalDate fechaFin) {

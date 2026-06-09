@@ -36,7 +36,7 @@ public class SuscripcionDAO {
             String consulta = "SELECT * FROM Suscripciones"
                     + " WHERE SocioId = ? AND Activo = true";
             
-            //Suscripcion suscripcion = null; // SI DEVUELVE NULL, NO SE PUDIERON ACCEDER A LOS DATOS Y DARA ERROR
+            Suscripcion suscripcion = null; // SI DEVUELVE NULL, NO SE PUDIERON ACCEDER A LOS DATOS Y DARA ERROR
             
             try (Connection connection = conn.getConexion()) {
                 
@@ -58,18 +58,29 @@ public class SuscripcionDAO {
                         }
                         
                         if (cuposRestantes == null) {
-                            SuscripcionLibre suscripcion = new SuscripcionLibre();
-                            suscripcion.setFechaFin(rs.getObject("FechaFin", LocalDate));
+                            SuscripcionLibre libre = new SuscripcionLibre();
+                            libre.setFechaInicio(rs.getObject("FechaInicio", LocalDate.class));
+                            libre.setFechaFin(rs.getObject("FechaFin", LocalDate.class));
                             // CALCULA LOS DIAS RESTANTES EN BASE A LA DIFERENCIA ENTRE FECHA ACTUAL Y FECHA FIN DE LA SUSCRIPCION
-                            suscripcion.setDiasRestantes(ChronoUnit.DAYS.between(LocalDate.now(), suscripcion.getFechaFin()));
+                            libre.setDiasRestantes((int) ChronoUnit.DAYS.between(LocalDate.now(), suscripcion.getFechaFin()));
+                            
+                            suscripcion = libre;
                         } else {
-                            SuscripcionCupo suscripcion = new SuscripcionCupo();
-                            suscripcion.setCuposRestantes(cuposRestantes);
+                            SuscripcionCupo cupo = new SuscripcionCupo();
+                            cupo.setFechaInicio(rs.getObject("FechaInicio", LocalDate.class));
+                            cupo.setFechaFin(rs.getObject("FechaFin", LocalDate.class));
+                            cupo.setCuposRestantes(cuposRestantes);
+                            suscripcion = cupo;
                         }
+                        
+                        suscripcion.setId_Suscripcion((rs.getInt("SuscripcionId")));
+                        suscripcion.setId_plan(rs.getInt("PlanId"));
+                        suscripcion.setActivo(true);
                     }
-                
+                return suscripcion;
                 }
             }
-            return socio;
     }
+    
+    // AGREGAR METODO PARA MAPEAR TODAS LAS CONSULTAS
 }

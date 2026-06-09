@@ -13,6 +13,7 @@ public class Socio extends Persona {
     
     // ATRIBUTOS
     private int id_socio;
+    private int id_plan;
     private LocalDate fechaAlta;
     private Suscripcion suscripcion;
     private boolean activo;
