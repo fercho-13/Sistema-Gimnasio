@@ -68,6 +68,10 @@ public class ControlAccesoFrame extends javax.swing.JFrame implements ControlAcc
         // TODO add your handling code here:
     }//GEN-LAST:event_btnIniciarSimulacionActionPerformed
 
+    private class ControlAccesoListener implements ControlAccesoInterfaz {
+        
+    }
+    
     // METODOS DE DE LA INTERFAZ
     @Override
     public void accesoConcedido(Socio socio) {

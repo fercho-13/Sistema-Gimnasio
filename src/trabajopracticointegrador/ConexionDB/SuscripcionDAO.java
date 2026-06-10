@@ -26,8 +26,8 @@ public class SuscripcionDAO {
     private ResultSet rs;
     
     // CONSTRUCTOR
-    public SuscripcionDAO() {
-        
+    public SuscripcionDAO(Conexion conn) {
+        this.conn = conn;
     }
     
     // CONSULTAR SOCIO POR DNI
@@ -62,7 +62,7 @@ public class SuscripcionDAO {
                             libre.setFechaInicio(rs.getObject("FechaInicio", LocalDate.class));
                             libre.setFechaFin(rs.getObject("FechaFin", LocalDate.class));
                             // CALCULA LOS DIAS RESTANTES EN BASE A LA DIFERENCIA ENTRE FECHA ACTUAL Y FECHA FIN DE LA SUSCRIPCION
-                            libre.setDiasRestantes((int) ChronoUnit.DAYS.between(LocalDate.now(), suscripcion.getFechaFin()));
+                            libre.setDiasRestantes((int) ChronoUnit.DAYS.between(LocalDate.now(), libre.getFechaFin()));
                             
                             suscripcion = libre;
                         } else {
@@ -70,12 +70,15 @@ public class SuscripcionDAO {
                             cupo.setFechaInicio(rs.getObject("FechaInicio", LocalDate.class));
                             cupo.setFechaFin(rs.getObject("FechaFin", LocalDate.class));
                             cupo.setCuposRestantes(cuposRestantes);
+                            
                             suscripcion = cupo;
                         }
                         
                         suscripcion.setId_Suscripcion((rs.getInt("SuscripcionId")));
                         suscripcion.setId_plan(rs.getInt("PlanId"));
                         suscripcion.setActivo(true);
+                    } else {
+                        
                     }
                 return suscripcion;
                 }

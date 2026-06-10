@@ -4,8 +4,12 @@
  */
 package trabajopracticointegrador.Logica;
 import trabajopracticointegrador.ConexionDB.SocioDAO;
-import trabajopracticointegrador.Logica.ControlAccesoInterfaz;
 import trabajopracticointegrador.Socio;
+import trabajopracticointegrador.SuscripcionCupo;
+import trabajopracticointegrador.SuscripcionLibre;
+import trabajopracticointegrador.Suscripcion;
+import trabajopracticointegrador.ConexionDB.SuscripcionDAO;
+import trabajopracticointegrador.ConexionDB.Conexion;
 import java.sql.SQLException;
 
 /**
@@ -16,12 +20,14 @@ public class ControlAcceso {
     
     // ATRIBUTOS
     private final ControlAccesoInterfaz listener;
-    private final SocioDAO repositorio;
+    private final SocioDAO socio_dao;
+    private final SuscripcionDAO suscripcion_dao;
     
     // CONSTRUCTOR 
-    public ControlAcceso(ControlAccesoInterfaz listener) {
+    public ControlAcceso(ControlAccesoInterfaz listener, Conexion conn) {
         this.listener = listener;
-        this.repositorio = new SocioDAO();
+        this.suscripcion_dao = new SuscripcionDAO(conn);
+        this.socio_dao = new SocioDAO(conn, suscripcion_dao);
     }
     
     // METODO
@@ -29,13 +35,18 @@ public class ControlAcceso {
             
         try {
             // da error ya que todavia no arme la base de datos
-            Socio socio = repositorio.obtenerSocio(dni);
+            Socio socio = socio_dao.obtenerSocio(dni);
 
             if (socio != null) {
-                if (socio.getSuscripcion() != null && socio.getSuscripcion().isActivo()) {
-                    listener.accesoConcedido(socio);
+                System.out.println(socio.getSuscripcion().getDescripcion());
+                if (socio.getSuscripcion() != null) {
+                    if (socio.getSuscripcion().isActivo()) {
+                        listener.accesoConcedido(socio);
+                    } else {
+                        listener.accesoParcial(socio);
+                    }
                 } else {
-                    listener.accesoParcial(socio);
+                    // EN CASO DE QUE EL SOCIO NUNCA HAYA REGISTRADO UNA SUSCRIPCION
                 }
             } else {
                 listener.accesoDenegado("DNI no registrado");

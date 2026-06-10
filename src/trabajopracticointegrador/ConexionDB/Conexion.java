@@ -25,7 +25,7 @@ public class Conexion {
     private Statement stm;
     
     // CONSTRUCTOR
-    public Conexion(String servidor, String database, String user, String password) {
+    public Conexion() {
         
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");

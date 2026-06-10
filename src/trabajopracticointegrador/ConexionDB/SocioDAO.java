@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package trabajopracticointegrador.ConexionDB;
+import trabajopracticointegrador.Suscripcion;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
@@ -22,10 +23,13 @@ public class SocioDAO {
     private Conexion conn;
     private ResultSet rs;
     private Socio socio;
+    private SuscripcionDAO suscripcion_dao;
+    private Suscripcion suscripcion;
     
     // CONSTRUCTOR
-    public SocioDAO() {
-        
+    public SocioDAO(Conexion conn, SuscripcionDAO suscripcion_dao) {
+        this.conn = conn;
+        this.suscripcion_dao = suscripcion_dao;
     }
     
     // CONSULTAR SOCIO POR DNI
@@ -56,6 +60,9 @@ public class SocioDAO {
                         socio.setFechaNacimiento(rs.getObject("FechaNacimiento", LocalDate.class));
                         socio.setFechaAlta(rs.getObject("FechaAlta", LocalDate.class));
                         socio.setActivo(rs.getBoolean("Activo"));
+                        
+                        Suscripcion suscripcion = suscripcion_dao.obtenerSuscripcionActiva(socio.getId_Socio());
+                        socio.setSuscripcion(suscripcion);
                     }
                 
                 }
