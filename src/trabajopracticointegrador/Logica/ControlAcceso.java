@@ -5,9 +5,6 @@
 package trabajopracticointegrador.Logica;
 import trabajopracticointegrador.ConexionDB.SocioDAO;
 import trabajopracticointegrador.Socio;
-import trabajopracticointegrador.SuscripcionCupo;
-import trabajopracticointegrador.SuscripcionLibre;
-import trabajopracticointegrador.Suscripcion;
 import trabajopracticointegrador.ConexionDB.SuscripcionDAO;
 import trabajopracticointegrador.ConexionDB.Conexion;
 import java.sql.SQLException;
@@ -34,11 +31,9 @@ public class ControlAcceso {
     public void procesarIngreso(String dni) {
             
         try {
-            // da error ya que todavia no arme la base de datos
             Socio socio = socio_dao.obtenerSocio(dni);
 
             if (socio != null) {
-                System.out.println(socio.getSuscripcion().getDescripcion());
                 if (socio.getSuscripcion() != null) {
                     if (socio.getSuscripcion().isActivo()) {
                         listener.accesoConcedido(socio);

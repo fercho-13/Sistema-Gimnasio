@@ -52,22 +52,4 @@ public class Conexion {
         conn = null;
         return conn;
     }
-    
-    public ResultSet consultar (String consulta) throws SQLException {
-        stm = conn.createStatement();
-        rs = stm.executeQuery(consulta);
-        return rs;
-    }
-    
-    public void insertar(String sql) {
-        try {
-            stm = conn.createStatement();
-            stm.executeUpdate(sql);
-            System.out.println(sql);
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-    }
-    
-    
 }

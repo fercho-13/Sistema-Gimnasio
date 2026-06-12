@@ -4,7 +4,11 @@
  */
 package trabajopracticointegrador.Vista;
 import trabajopracticointegrador.Logica.ControlAccesoInterfaz;
+import trabajopracticointegrador.Logica.ControlAcceso;
 import trabajopracticointegrador.Socio;
+import trabajopracticointegrador.ConexionDB.SocioDAO;
+import trabajopracticointegrador.ConexionDB.SuscripcionDAO;
+import trabajopracticointegrador.ConexionDB.Conexion;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,14 +21,19 @@ import java.awt.BorderLayout;
  *
  * @author fermi
  */
-public class ControlAccesoFrame extends javax.swing.JFrame implements ControlAccesoInterfaz {
+public class ControlAccesoFrame extends javax.swing.JFrame {
+    
+    private ControlAcceso control;
+    private ControlAccesoListener listener;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ControlAccesoFrame.class.getName());
 
     /**
      * Creates new form ControlAccesoFrame
      */
-    public ControlAccesoFrame() {
+    public ControlAccesoFrame(Conexion conn) {
+        this.listener = new ControlAccesoListener();
+        this.control = new ControlAcceso(listener, conn);
         initComponents();
     }
 
@@ -38,27 +47,44 @@ public class ControlAccesoFrame extends javax.swing.JFrame implements ControlAcc
     private void initComponents() {
 
         btnIniciarSimulacion = new javax.swing.JButton();
+        txtIngresoDni = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         btnIniciarSimulacion.setText("Iniciar simulacion");
         btnIniciarSimulacion.addActionListener(this::btnIniciarSimulacionActionPerformed);
 
+        txtIngresoDni.addActionListener(this::txtIngresoDniActionPerformed);
+
+        jLabel1.setText("Ingrese DNI:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(161, 161, 161)
-                .addComponent(btnIniciarSimulacion)
-                .addContainerGap(117, Short.MAX_VALUE))
+                .addContainerGap(73, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnIniciarSimulacion)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(57, 57, 57)
+                        .addComponent(txtIngresoDni, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(136, 136, 136))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(136, 136, 136)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(129, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtIngresoDni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(120, 120, 120)
                 .addComponent(btnIniciarSimulacion)
-                .addContainerGap(141, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -68,13 +94,35 @@ public class ControlAccesoFrame extends javax.swing.JFrame implements ControlAcc
         // TODO add your handling code here:
     }//GEN-LAST:event_btnIniciarSimulacionActionPerformed
 
-    private class ControlAccesoListener implements ControlAccesoInterfaz {
+    private void txtIngresoDniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIngresoDniActionPerformed
         
-    }
+        String dni = txtIngresoDni.getText().trim();
+        control.procesarIngreso(dni);
+    }//GEN-LAST:event_txtIngresoDniActionPerformed
+
+        private class ControlAccesoListener implements ControlAccesoInterfaz {
+
+            // CONSTRUCTOR
+            public ControlAccesoListener() {
+
+            }
+
+            @Override
+            public void accesoConcedido(Socio socio) {
+                dialogAccesoConcedido(socio);
+            }
+
+            @Override 
+            public void accesoParcial(Socio socio) {
+                dialogAccesoParcial(socio);
+            }
+
+            public void accesoDenegado(String mensajeError) {
+                dialogAccesoDenegado(mensajeError);
+            }
+        }
     
-    // METODOS DE DE LA INTERFAZ
-    @Override
-    public void accesoConcedido(Socio socio) {
+    public void dialogAccesoConcedido(Socio socio) {
         
         // DATOS DEL SOCIO 
         JDialog dialog = new JDialog(this, "Datos de socio", true);
@@ -90,8 +138,7 @@ public class ControlAccesoFrame extends javax.swing.JFrame implements ControlAcc
         // agregar boton de cierre
     }
     
-    @Override
-    public void accesoDenegado(String mensajeError) {
+    public void dialogAccesoDenegado(String mensajeError) {
         JDialog dialog = new JDialog(this, "", true);
         dialog.setSize(350, 400);
         dialog.setLayout(new BorderLayout());
@@ -106,8 +153,7 @@ public class ControlAccesoFrame extends javax.swing.JFrame implements ControlAcc
         // agregar boton de cierre
     }
     
-    @Override
-    public void accesoParcial(Socio socio) {
+    public void dialogAccesoParcial(Socio socio) {
        
         // CREACION DE NUEVA VENTANA DIALOG
         JDialog dialog = new JDialog(this, "Datos de socio", true);
@@ -155,29 +201,10 @@ public class ControlAccesoFrame extends javax.swing.JFrame implements ControlAcc
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new ControlAccesoFrame().setVisible(true));
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIniciarSimulacion;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JTextField txtIngresoDni;
     // End of variables declaration//GEN-END:variables
 }

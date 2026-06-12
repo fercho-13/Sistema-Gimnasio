@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package trabajopracticointegrador.Vista;
+import trabajopracticointegrador.ConexionDB.Conexion;
 
 /**
  *
@@ -10,15 +11,18 @@ package trabajopracticointegrador.Vista;
  */
 public class MenuPrincipalFrame extends javax.swing.JFrame {
     
+    private final Conexion conn;
+    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MenuPrincipalFrame.class.getName());
 
     /**
      * Creates new form MenuPrincipalFrame
      */
-    public MenuPrincipalFrame() {
+    public MenuPrincipalFrame(Conexion conn) {
+        this.conn = conn;
         initComponents();
     }
-
+   
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -51,6 +55,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
 
         btnControlAcceso.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnControlAcceso.setText("Control de Acceso");
+        btnControlAcceso.addActionListener(this::btnControlAccesoActionPerformed);
 
         btnSalir.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnSalir.setText("Salir");
@@ -87,6 +92,14 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnControlAccesoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnControlAccesoActionPerformed
+        // TODO add your handling code here:
+        
+        ControlAccesoFrame ventanaControlAcceso = new ControlAccesoFrame(conn);
+        ventanaControlAcceso.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnControlAccesoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -109,7 +122,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new MenuPrincipalFrame().setVisible(true));
+        //java.awt.EventQueue.invokeLater(() -> new MenuPrincipalFrame().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
