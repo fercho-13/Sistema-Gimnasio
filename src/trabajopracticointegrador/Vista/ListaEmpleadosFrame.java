@@ -4,25 +4,19 @@
  */
 package trabajopracticointegrador.Vista;
 
-import javax.swing.JOptionPane;
-import trabajopracticointegrador.ConexionDB.Conexion;
-
 /**
  *
  * @author danny
  */
 public class ListaSocioFrame extends javax.swing.JFrame {
-
+    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ListaSocioFrame.class.getName());
-    private final Conexion conn;
 
     /**
      * Creates new form ListaSocioFrame
      */
-    public ListaSocioFrame(Conexion conn) {
-        this.conn = conn;
-    initComponents();
-    setLocationRelativeTo(null);
+    public ListaSocioFrame() {
+        initComponents();
     }
 
     /**
@@ -78,7 +72,7 @@ public class ListaSocioFrame extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Nombre", "Apellido", "DNI", "Telefono", "Fecha Alta", "Activo"
+                "ID", "Nombre", "Apellido", "DNI", "Telefono", "Fecha Alta", "Title 7"
             }
         ));
         tblSocios.setToolTipText("");
@@ -156,37 +150,22 @@ public class ListaSocioFrame extends javax.swing.JFrame {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(
-        this,
-        "Funcionalidad pendiente");
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(
-        this,
-        "Funcionalidad pendiente");
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(
-        this,
-        "Funcionalidad pendiente");
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(
-        this,
-        "Funcionalidad pendiente");
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        MenuPrincipalFrame menu = new MenuPrincipalFrame(conn);
-        menu.setVisible(true);
-
-        this.dispose();
+        // TODO add your handling code here:
     }//GEN-LAST:event_btnVolverActionPerformed
 
     /**
@@ -210,6 +189,8 @@ public class ListaSocioFrame extends javax.swing.JFrame {
         }
         //</editor-fold>
 
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(() -> new ListaSocioFrame().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
