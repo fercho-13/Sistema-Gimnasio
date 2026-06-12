@@ -4,11 +4,8 @@
  */
 package trabajopracticointegrador.ConexionDB;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.PreparedStatement;
 
 /**
  *
@@ -17,12 +14,8 @@ import java.sql.PreparedStatement;
 public class Conexion {
     
     // ATRIBUTOS
-    Connection conector = null;
-    
     private String URL;
     private Connection conn;
-    private ResultSet rs;
-    private Statement stm;
     
     // CONSTRUCTOR
     public Conexion() {
@@ -31,16 +24,15 @@ public class Conexion {
             Class.forName("com.mysql.cj.jdbc.Driver");
             
             this.URL = "jdbc:mysql://localhost:3307/sistema_gimnasio";
-            conn = DriverManager.getConnection(this.URL, "root", "");            
-        } catch(SQLException | ClassNotFoundException e) {
+        } catch(ClassNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
     
     // METODOS
     
-    public Connection getConexion() {
-        return conn;
+    public Connection getConexion() throws SQLException {
+        return DriverManager.getConnection(URL, "root", "");
     }
     
     public Connection cerrarConexion() {

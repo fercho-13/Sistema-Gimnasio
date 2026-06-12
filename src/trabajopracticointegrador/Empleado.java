@@ -15,7 +15,8 @@ public class Empleado extends Persona {
     private LocalDate fechaIngreso;
     private LocalDate fechaEgreso;
     private boolean activo;
-    private String cargo;
+    private String rol;
+    private int id_rol;
     
     // CONSTRUCTOR VACIO
     public Empleado() {
@@ -40,6 +41,14 @@ public class Empleado extends Persona {
 
     public LocalDate getFechaEgreso() {
         return fechaEgreso;
+    } 
+
+    public String getRol() {
+        return rol;
+    } 
+
+    public int getId_rol() {
+        return id_rol;
     }
 
     public boolean isActivo() {
@@ -58,6 +67,14 @@ public class Empleado extends Persona {
     
     public void setActivo (boolean setActivo) {
         this.activo = activo;
+    }
+    
+    public void setRol (String rol) {
+        this.rol = rol;
+    } 
+
+    public void setId_rol(int id_rol) {
+        this.id_rol = id_rol;
     }
     
     // METODOS

@@ -3,26 +3,66 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package trabajopracticointegrador.Vista;
-
-import javax.swing.JOptionPane;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import trabajopracticointegrador.ConexionDB.Conexion;
+import java.util.ArrayList;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import trabajopracticointegrador.ConexionDB.SocioDAO;
+import trabajopracticointegrador.Suscripcion;
+import trabajopracticointegrador.Socio;
+import trabajopracticointegrador.ConexionDB.SuscripcionDAO;
+import trabajopracticointegrador.SuscripcionCupo;
+import trabajopracticointegrador.SuscripcionLibre;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import javax.swing.table.DefaultTableModel;
+
 
 /**
  *
  * @author danny
  */
 public class ListaSocioFrame extends javax.swing.JFrame {
-
+    
+    private Conexion conexion;
+    private ArrayList<Suscripcion> planes;
+    private SuscripcionDAO suscripcion_dao;
+    private SocioDAO socio_dao;
+    
+    private Socio socio;
+    private Suscripcion suscripcion;
+    private SuscripcionLibre suscripcion_libre;
+    private SuscripcionCupo suscripcion_cupo;
+    
+    private DefaultTableModel modelo;
+    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ListaSocioFrame.class.getName());
-    private final Conexion conn;
 
     /**
      * Creates new form ListaSocioFrame
+     * @param conn
      */
+    
+    // SI NO DECLARO @param, NO FUNCIONA
     public ListaSocioFrame(Conexion conn) {
-        this.conn = conn;
-    initComponents();
-    setLocationRelativeTo(null);
+        initComponents();
+        
+        this.conexion = conn;
+        
+        modelo = new DefaultTableModel(new Object[]{"ID", "Nombre", "Apellido", "DNI", "Telefono", "Fecha Alta"}, 0);
+    
+        tblSocios.setModel(modelo);
     }
 
     /**
@@ -35,6 +75,9 @@ public class ListaSocioFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         jButton3 = new javax.swing.JButton();
+        dialogModificar = new javax.swing.JDialog();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
         lblListaSocios = new javax.swing.JLabel();
         lblBuscarDni = new javax.swing.JLabel();
         txtBuscarDni = new javax.swing.JTextField();
@@ -48,6 +91,31 @@ public class ListaSocioFrame extends javax.swing.JFrame {
 
         jButton3.setText("jButton1");
         jButton3.addActionListener(this::jButton3ActionPerformed);
+
+        jTextField1.setText("jTextField1");
+
+        jLabel1.setText("DNI:");
+
+        javax.swing.GroupLayout dialogModificarLayout = new javax.swing.GroupLayout(dialogModificar.getContentPane());
+        dialogModificar.getContentPane().setLayout(dialogModificarLayout);
+        dialogModificarLayout.setHorizontalGroup(
+            dialogModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dialogModificarLayout.createSequentialGroup()
+                .addGap(71, 71, 71)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(112, 112, 112))
+        );
+        dialogModificarLayout.setVerticalGroup(
+            dialogModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dialogModificarLayout.createSequentialGroup()
+                .addGap(134, 134, 134)
+                .addGroup(dialogModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addContainerGap(144, Short.MAX_VALUE))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Lista de Socios");
@@ -66,19 +134,20 @@ public class ListaSocioFrame extends javax.swing.JFrame {
 
         btnAgregar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnAgregar.setText("Agregar");
+        btnAgregar.addActionListener(this::btnAgregarActionPerformed);
 
         tblSocios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Nombre", "Apellido", "DNI", "Telefono", "Fecha Alta", "Activo"
+                "ID", "Nombre", "Apellido", "DNI", "Telefono", "Fecha Alta"
             }
         ));
         tblSocios.setToolTipText("");
@@ -156,61 +225,205 @@ public class ListaSocioFrame extends javax.swing.JFrame {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(
-        this,
-        "Funcionalidad pendiente");
+        
+        suscripcion_dao = new SuscripcionDAO(conexion);
+        socio_dao = new SocioDAO(conexion, suscripcion_dao);
+        
+        String dni = txtBuscarDni.getText().trim();
+        
+        Socio socio = socio_dao.obtenerSocio(dni);
+        
+        if (socio != null) {
+            modelo.addRow(new Object[]{socio.getId_Socio(), socio.getNombre(), socio.getApellido(), socio.getDNI(), socio.getNumeroTelefono(),
+                socio.getFechaAlta()
+            });
+        } else {
+            JDialog dialog = new JDialog(this, "", true);
+            dialog.setSize(350, 400);
+            dialog.setLayout(new BorderLayout());
+
+            // PANEL PRINCIPAL CON PADDING
+            JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10));
+            panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+            // MENSAJE DE ERROR
+            panel.add(new JLabel("Socio no encontrado"));
+
+            // AGREGO EL PANEL AL DIALOG
+            dialog.add(panel, BorderLayout.CENTER);
+
+            // BOTON DE CIERRE
+            JButton botonCierre = new JButton("Cerrar");
+            botonCierre.addActionListener(e -> dialog.dispose());
+            dialog.add(botonCierre, BorderLayout.SOUTH);
+
+            dialog.setLocationRelativeTo(this);
+            dialog.setVisible(true);
+        }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(
-        this,
-        "Funcionalidad pendiente");
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(
-        this,
-        "Funcionalidad pendiente");
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(
-        this,
-        "Funcionalidad pendiente");
+        
+        dialogModificar = new JDialog(this, "Eliminar socio", true);
+        
+        JPanel panel = new JPanel(new GridLayout(2, 1, 10, 10));
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        MenuPrincipalFrame menu = new MenuPrincipalFrame(conn);
-        menu.setVisible(true);
-
-        this.dispose();
+        // TODO add your handling code here:
+        
+        dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        // TODO add your handling code here:
+        
+        JDialog dialog = new JDialog(this, "Datos de socio", true);
+        dialog.setSize(500, 550);
+        dialog.setLayout(new BorderLayout());
+        
+        // PANEL PRINCIPAL CON PADDING
+        JPanel panel = new JPanel(new GridLayout(8, 2, 10, 10));
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        
+        // CAMPOS PARA INGRESO DE DATOS
+        JTextField txtNombre = new JTextField();
+        JTextField txtApellido = new JTextField();
+        JTextField txtFechaNacimiento = new JTextField();
+        JTextField txtDni = new JTextField();
+        JTextField txtDireccion = new JTextField();
+        JTextField txtTelefono = new JTextField();
+        
+        DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        
+        suscripcion_dao = new SuscripcionDAO(conexion);
+        socio_dao = new SocioDAO(conexion, suscripcion_dao);
+        
+        planes = suscripcion_dao.obtenerPlanes();
+        
+        JComboBox cmbPlan = new JComboBox();
+        
+        for (Suscripcion plan : planes) {
+            cmbPlan.addItem(plan.getDescripcion());
+        }
+        
+        panel.add(new JLabel("Nombre"));
+        panel.add(txtNombre);
+        
+        panel.add(new JLabel("Apellido"));
+        panel.add(txtApellido);
+        
+        panel.add(new JLabel("DNI"));
+        panel.add(txtDni);
+        
+        panel.add(new JLabel("Fecha de nacimiento (dd/MM/aaaa)"));
+        panel.add(txtFechaNacimiento);
+        
+        panel.add(new JLabel("Direccion"));
+        panel.add(txtDireccion);
+        
+        panel.add(new JLabel("Numero de telefono"));
+        panel.add(txtTelefono);
+        
+        panel.add(new JLabel("Plan"));
+        panel.add(cmbPlan);
+        
+        // AGREGO EL PANEL AL DIALOG
+        dialog.add(panel, BorderLayout.CENTER);
+        
+        // PANEL PARA BOTONES
+        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        
+        // BOTON GUARDAR 
+        JButton botonGuardar = new JButton("Guardar");
+        botonGuardar.addActionListener(e -> {
+            socio = new Socio();
+            suscripcion = new Suscripcion();
+            
+            socio.setNombre(txtNombre.getText().trim());
+            socio.setApellido(txtApellido.getText().trim());
+            socio.setDNI(txtDni.getText().trim());
+            socio.setFechaNacimiento(LocalDate.parse(txtFechaNacimiento.getText().trim(), formateador));
+            socio.setDireccion(txtDireccion.getText().trim());
+            socio.setNumeroTelefono(txtTelefono.getText().trim());
+            
+            String plan_descripcion = cmbPlan.getSelectedItem().toString();
+            boolean plan_encontrado = false;
+            
+            for (Suscripcion plan : planes) {
+                if (plan.getDescripcion().equals(plan_descripcion)) {
+                    asignarDatosPlan(plan);
+                    socio.setSuscripcion(suscripcion);
+                    plan_encontrado = true;
                     break;
                 }
             }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+            
+            if (plan_encontrado == true) {
+                try {
+                    if (socio_dao.insertarSocio(socio) == true) {
+                        JOptionPane.showMessageDialog(dialog, "Socio " + socio.getApellido() + " registrado correctamente.", "Operación Exitosa", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(dialog, "Error crítico al intentar guardar en la Base de Datos.", "Error de Persistencia", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (SQLException ex) {
+                    System.getLogger(ListaSocioFrame.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                }
+                
+                
+            } else {
+                JOptionPane.showMessageDialog(dialog, "Error interno: No se pudo mapear la suscripción.", "Error Técnico", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+        panelBotones.add(botonGuardar);
+        
+        // BOTON DE CIERRE
+        JButton botonCierre = new JButton("Cerrar");
+        botonCierre.addActionListener(e -> dialog.dispose());
+        panelBotones.add(botonCierre);
+        
+        // AGREGO EL PANEL DE BOTONES AL DIALOG
+        dialog.add(panelBotones, BorderLayout.SOUTH);
+        
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_btnAgregarActionPerformed
 
+    private void asignarDatosPlan(Suscripcion p) {
+        
+        int total_cupos = p.getCuposTotal();
+        if (total_cupos > 0) {
+            suscripcion_cupo = new SuscripcionCupo();
+            suscripcion_cupo.setCuposTotal(total_cupos);
+            suscripcion = suscripcion_cupo;
+        } else {
+            suscripcion_libre = new SuscripcionLibre();
+            suscripcion = suscripcion_libre;
+        }
+        
+        suscripcion.setId_plan(p.getId_plan());
+        suscripcion.setDescripcion(p.getDescripcion());
+        suscripcion.setFechaInicio(LocalDate.now());
+        suscripcion.setFechaFin(calcularFecha(suscripcion.getFechaInicio(), suscripcion.getDiasTotal()));
     }
+    
+    private LocalDate calcularFecha(LocalDate fecha, int dias) {
+        return fecha.plusDays(dias);
+    }
+    
+    /**
+     * @param args the command line arguments
+     */
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
@@ -218,7 +431,10 @@ public class ListaSocioFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnVolver;
+    private javax.swing.JDialog dialogModificar;
     private javax.swing.JButton jButton3;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lblBuscarDni;
     private javax.swing.JLabel lblListaSocios;
     private javax.swing.JScrollPane scpSocios;

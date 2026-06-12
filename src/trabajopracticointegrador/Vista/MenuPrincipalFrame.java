@@ -19,8 +19,9 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
      * Creates new form MenuPrincipalFrame
      */
     public MenuPrincipalFrame(Conexion conn) {
-        this.conn = conn;
         initComponents();
+        
+        this.conn = conn;
     }
    
     /**
@@ -49,9 +50,11 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
 
         btnSocios.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnSocios.setText("Gestion de Socios");
+        btnSocios.addActionListener(this::btnSociosActionPerformed);
 
         btnEmpleados.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnEmpleados.setText("Gestion de Empleados");
+        btnEmpleados.addActionListener(this::btnEmpleadosActionPerformed);
 
         btnControlAcceso.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnControlAcceso.setText("Control de Acceso");
@@ -59,6 +62,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
 
         btnSalir.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnSalir.setText("Salir");
+        btnSalir.addActionListener(this::btnSalirActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -97,8 +101,30 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         
         ControlAccesoFrame ventanaControlAcceso = new ControlAccesoFrame(conn);
         ventanaControlAcceso.setVisible(true);
-        this.dispose();
+        
     }//GEN-LAST:event_btnControlAccesoActionPerformed
+
+    private void btnSociosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSociosActionPerformed
+        // TODO add your handling code here:
+        
+        ListaSocioFrame ventanaSocio = new ListaSocioFrame(conn);
+        
+        ventanaSocio.setVisible(true);
+    }//GEN-LAST:event_btnSociosActionPerformed
+
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        // TODO add your handling code here:
+        
+        dispose();
+    }//GEN-LAST:event_btnSalirActionPerformed
+
+    private void btnEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmpleadosActionPerformed
+        // TODO add your handling code here:
+        
+        ListaEmpleadoFrame ventanaEmpleado = new ListaEmpleadoFrame(conn);
+        
+        ventanaEmpleado.setVisible(true);
+    }//GEN-LAST:event_btnEmpleadosActionPerformed
 
     /**
      * @param args the command line arguments

@@ -3,6 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
 package trabajopracticointegrador.Logica;
+import java.util.Vector;
+import trabajopracticointegrador.Ingreso;
 import trabajopracticointegrador.Socio;
 
 /**
@@ -14,11 +16,20 @@ public interface ControlAccesoInterfaz {
     // METODOS
     
     // SOCIO INGRESA CON EXITO
-    void accesoConcedido(Socio socio);
+    Ingreso accesoConcedido(Socio socio);
     
     // SOCIO NO PUEDE INGRESAR POR ACCESO DENEGADO
     void accesoDenegado(String mensajeError);
     
     // SOCIO PUEDE INGRESAR PERO DEBE ABONAR LA SUSCRIPCION
-    void accesoParcial(Socio socio);
+    Ingreso accesoParcial(Socio socio);
+    
+    // CARGA LOS DATOS DEL SOCIO EN LA LISTA DE SOCIOS DENTRO DEL GIMNASIO
+    void ingresarSocio(SocioEntrenandoThread hilo);
+    
+    // RETIRA AL SOCIO DE LA LISTA DE SOCIOS DENTRO DEL GIMNASIO
+    void retirarSocio(SocioEntrenandoThread hilo);
+    
+    // OBTENER LA LISTA DE HILOS
+    Vector<SocioEntrenandoThread> getHilosActivos();
 }

@@ -9,7 +9,7 @@ import java.time.LocalDate;
  *
  * @author fermi
  */
-public abstract class Suscripcion {
+public class Suscripcion {
     
     // ATRIBUTOS
     private int id_suscripcion;
@@ -19,6 +19,8 @@ public abstract class Suscripcion {
     private boolean activo;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
+    private int cuposTotal;
+    private int diasTotal;
 
     
     // CONSTRUCTOR VACIO
@@ -65,6 +67,14 @@ public abstract class Suscripcion {
 
     public LocalDate getFechaFin() {
         return fechaFin;
+    } 
+
+    public int getCuposTotal() {
+        return cuposTotal;
+    } 
+
+    public int getDiasTotal() {
+        return diasTotal;
     }
     
     // SETTERS
@@ -95,8 +105,16 @@ public abstract class Suscripcion {
     
     public void setActivo (boolean activo) {
         this.activo = activo;
+    } 
+
+    public void setCuposTotal(int cuposTotal) {
+        this.cuposTotal = cuposTotal;
+    } 
+
+    public void setDiasTotal(int diasTotal) {
+        this.diasTotal = diasTotal;
     }
-    
+     
     // METODOS
     
     public void desactivar() {

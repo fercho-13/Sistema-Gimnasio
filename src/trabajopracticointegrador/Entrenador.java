@@ -13,7 +13,6 @@ public class Entrenador extends Empleado {
     
     // ATRIBUTOS
     private String matricula;
-    private LocalDate fechaMatriculaVencimiento;
     
     // CONSTRUCTOR VACIO
     public Entrenador() {
@@ -22,10 +21,9 @@ public class Entrenador extends Empleado {
     
     // CONSTRUCTOR CON PARAMETROS
 
-    public Entrenador(String matricula, LocalDate fechaMatriculaVencimiento, String nombre, String apellido, String DNI, String direccion, String numeroTelefono) {
+    public Entrenador(String matricula, String nombre, String apellido, String DNI, String direccion, String numeroTelefono) {
         super(nombre, apellido, DNI, direccion, numeroTelefono);
         this.matricula = matricula;
-        this.fechaMatriculaVencimiento = fechaMatriculaVencimiento;
     }
 
     // GETTERS
@@ -33,20 +31,11 @@ public class Entrenador extends Empleado {
     public String getMatricula() {
         return matricula;
     }
-
-    public LocalDate getFechaMatriculaVencimiento() {
-        return fechaMatriculaVencimiento;
-    }
     
     // SETTERS
 
     public void setMatricula(String matricula) {
         this.matricula = matricula;
     }
-
-    public void setFechaMatriculaVencimiento(LocalDate fechaMatriculaVencimiento) {
-        this.fechaMatriculaVencimiento = fechaMatriculaVencimiento;
-    }
-    
     
 }
