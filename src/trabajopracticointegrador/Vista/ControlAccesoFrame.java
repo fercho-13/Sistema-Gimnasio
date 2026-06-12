@@ -6,12 +6,11 @@ package trabajopracticointegrador.Vista;
 import trabajopracticointegrador.Logica.ControlAccesoInterfaz;
 import trabajopracticointegrador.Logica.ControlAcceso;
 import trabajopracticointegrador.Socio;
-import trabajopracticointegrador.ConexionDB.SocioDAO;
-import trabajopracticointegrador.ConexionDB.SuscripcionDAO;
 import trabajopracticointegrador.ConexionDB.Conexion;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JButton;
 import javax.swing.BorderFactory;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
@@ -130,12 +129,21 @@ public class ControlAccesoFrame extends javax.swing.JFrame {
         dialog.setLayout(new BorderLayout());
         
         // PANEL PRINCIPAL CON PADDING
-        JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10));
+        JPanel panel = new JPanel(new GridLayout(6, 1, 10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         
         mostrarDatosSocio(socio, panel);
+        
+        // AGREGO EL PANEL AL DIALOG
+        dialog.add(panel, BorderLayout.CENTER);
 
-        // agregar boton de cierre
+        // BOTON DE CIERRE
+        JButton botonCierre = new JButton("Cerrar");
+        botonCierre.addActionListener(e -> dialog.dispose());
+        dialog.add(botonCierre, BorderLayout.SOUTH);
+        
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
     }
     
     public void dialogAccesoDenegado(String mensajeError) {
@@ -149,8 +157,17 @@ public class ControlAccesoFrame extends javax.swing.JFrame {
         
         // MENSAJE DE ERROR
         panel.add(new JLabel(mensajeError));
+        
+        // AGREGO EL PANEL AL DIALOG
+        dialog.add(panel, BorderLayout.CENTER);
 
-        // agregar boton de cierre
+        // BOTON DE CIERRE
+        JButton botonCierre = new JButton("Cerrar");
+        botonCierre.addActionListener(e -> dialog.dispose());
+        dialog.add(botonCierre, BorderLayout.SOUTH);
+        
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
     }
     
     public void dialogAccesoParcial(Socio socio) {
@@ -168,8 +185,17 @@ public class ControlAccesoFrame extends javax.swing.JFrame {
         
         // MENSAJE DE AVISO
         panel.add(new JLabel("Debe abonar la suscripcion"));
-
-        // agregar boton de cierre
+        
+        // AGREGO EL PANEL AL DIALOG
+        dialog.add(panel, BorderLayout.CENTER);
+        
+        // BOTON DE CIERRE
+        JButton botonCierre = new JButton("Cerrar");
+        botonCierre.addActionListener(e -> dialog.dispose());
+        dialog.add(botonCierre, BorderLayout.SOUTH);
+        
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
     }
     
     public void mostrarDatosSocio(Socio socio, JPanel panel) {
@@ -183,11 +209,12 @@ public class ControlAccesoFrame extends javax.swing.JFrame {
 
         panel.add(new JLabel("DNI:"));
         panel.add(new JLabel(String.valueOf(socio.getDNI())));
-
+        
+        panel.add(new JLabel("Socio:"));
         if (socio.isActivo()) {
-            panel.add(new JLabel("Socio activo"));
+            panel.add(new JLabel("Activo"));
         } else {
-            panel.add(new JLabel("Socio inactivo"));
+            panel.add(new JLabel("Inactivo"));
         }
 
         // DATOS DE SUSCRIPCION

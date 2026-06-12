@@ -33,8 +33,9 @@ public class SuscripcionDAO {
     // CONSULTAR SOCIO POR DNI
     public Suscripcion obtenerSuscripcionActiva(int id_socio) throws SQLException {
         
-            String consulta = "SELECT * FROM Suscripciones"
-                    + " WHERE SocioId = ? AND Activo = true";
+            String consulta = "SELECT * FROM Suscripciones s"
+                    + " INNER JOIN Planes p ON s.PlanId = p.PlanId"
+                    + " WHERE s.SocioId = ? AND s.Activo = true";
             
             Suscripcion suscripcion = null; // SI DEVUELVE NULL, NO SE PUDIERON ACCEDER A LOS DATOS Y DARA ERROR
             
@@ -49,7 +50,7 @@ public class SuscripcionDAO {
                     if (rs.next()) {
                         
                         Integer cuposRestantes = null;
-                        int cuposLectura = rs.getInt("CuposRestantes");
+                        int cuposLectura = rs.getInt("s.CuposRestantes");
                         
                         // COMO JDBC NO PUEDE DEVOLVER VALORES NULL, VERIFICA CUAL FUE EL ULTIMO DATO LEIDO DE LA BD
                         if (!rs.wasNull()) {
@@ -59,23 +60,23 @@ public class SuscripcionDAO {
                         
                         if (cuposRestantes == null) {
                             SuscripcionLibre libre = new SuscripcionLibre();
-                            libre.setFechaInicio(rs.getObject("FechaInicio", LocalDate.class));
-                            libre.setFechaFin(rs.getObject("FechaFin", LocalDate.class));
+                            libre.setFechaInicio(rs.getObject("s.FechaInicio", LocalDate.class));
+                            libre.setFechaFin(rs.getObject("s.FechaFin", LocalDate.class));
                             // CALCULA LOS DIAS RESTANTES EN BASE A LA DIFERENCIA ENTRE FECHA ACTUAL Y FECHA FIN DE LA SUSCRIPCION
                             libre.setDiasRestantes((int) ChronoUnit.DAYS.between(LocalDate.now(), libre.getFechaFin()));
                             
                             suscripcion = libre;
                         } else {
                             SuscripcionCupo cupo = new SuscripcionCupo();
-                            cupo.setFechaInicio(rs.getObject("FechaInicio", LocalDate.class));
-                            cupo.setFechaFin(rs.getObject("FechaFin", LocalDate.class));
+                            cupo.setFechaInicio(rs.getObject("s.FechaInicio", LocalDate.class));
+                            cupo.setFechaFin(rs.getObject("s.FechaFin", LocalDate.class));
                             cupo.setCuposRestantes(cuposRestantes);
                             
                             suscripcion = cupo;
                         }
-                        
-                        suscripcion.setId_Suscripcion((rs.getInt("SuscripcionId")));
-                        suscripcion.setId_plan(rs.getInt("PlanId"));
+                        suscripcion.setDescripcion(rs.getString("p.Descripcion"));
+                        suscripcion.setId_Suscripcion((rs.getInt("s.SuscripcionId")));
+                        suscripcion.setId_plan(rs.getInt("p.PlanId"));
                         suscripcion.setActivo(true);
                     } else {
                         
