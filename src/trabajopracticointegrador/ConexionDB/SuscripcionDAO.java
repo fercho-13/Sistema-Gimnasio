@@ -14,6 +14,7 @@ import trabajopracticointegrador.SuscripcionLibre;
 import trabajopracticointegrador.SuscripcionCupo;
 import java.lang.Integer;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 
 /**
  *
@@ -24,6 +25,8 @@ public class SuscripcionDAO {
     // ATRIBUTOS
     private Conexion conn;
     private ResultSet rs;
+    private Suscripcion suscripcion;
+    private ArrayList<Suscripcion> suscripciones;
     
     // CONSTRUCTOR
     public SuscripcionDAO(Conexion conn) {
@@ -78,13 +81,39 @@ public class SuscripcionDAO {
                         suscripcion.setId_Suscripcion((rs.getInt("s.SuscripcionId")));
                         suscripcion.setId_plan(rs.getInt("p.PlanId"));
                         suscripcion.setActivo(true);
-                    } else {
-                        
                     }
                 return suscripcion;
                 }
             }
     }
     
-    // AGREGAR METODO PARA MAPEAR TODAS LAS CONSULTAS
+    // CONSULTAR TODOS LOS PLANES
+    
+    public ArrayList<Suscripcion> obtenerPlanes() throws SQLException {
+        String consulta = "SELECT * FROM Planes";
+        
+        suscripciones = new ArrayList<Suscripcion>();
+        
+        try (Connection connection = conn.getConexion()) {
+            
+            PreparedStatement stm = connection.prepareStatement(consulta);
+            
+            rs = stm.executeQuery();
+            
+            while (rs.next()) {
+                suscripcion = new Suscripcion();
+                
+                suscripcion.setId_plan(rs.getInt("PlanId"));
+                suscripcion.setDescripcion(rs.getString("Descripcion"));
+                suscripcion.setCuposTotal(rs.getInt("CantidadCupos"));
+                
+                
+                suscripciones.add(suscripcion);
+            }
+        }
+        
+        return suscripciones;
+    }
+    
+    // AGREGAR METODO INSERTAR SUSCRIPCION
 }

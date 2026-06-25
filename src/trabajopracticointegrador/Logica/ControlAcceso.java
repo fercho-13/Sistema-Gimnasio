@@ -19,6 +19,7 @@ public class ControlAcceso {
     private final ControlAccesoInterfaz listener;
     private final SocioDAO socio_dao;
     private final SuscripcionDAO suscripcion_dao;
+    private SocioIngresadoSimulador hilo;
     
     // CONSTRUCTOR 
     public ControlAcceso(ControlAccesoInterfaz listener, Conexion conn) {
@@ -30,25 +31,23 @@ public class ControlAcceso {
     // METODO
     public void procesarIngreso(String dni) {
             
-        try {
-            Socio socio = socio_dao.obtenerSocio(dni);
-
-            if (socio != null) {
-                if (socio.getSuscripcion() != null) {
-                    if (socio.getSuscripcion().isActivo()) {
-                        listener.accesoConcedido(socio);
-                    } else {
-                        listener.accesoParcial(socio);
-                    }
+        Socio socio = socio_dao.obtenerSocio(dni);
+        if (socio != null) {
+            if (socio.getSuscripcion() != null) {
+                if (socio.getSuscripcion().isActivo()) {
+                    listener.accesoConcedido(socio);
                 } else {
-                    // EN CASO DE QUE EL SOCIO NUNCA HAYA REGISTRADO UNA SUSCRIPCION
+                    listener.accesoParcial(socio);
                 }
+                
+                hilo = new SocioIngresadoSimulador(listener, socio);
+                hilo.start();
+                
             } else {
-                listener.accesoDenegado("DNI no registrado");
+                // EN CASO DE QUE EL SOCIO NUNCA HAYA REGISTRADO UNA SUSCRIPCION
             }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            listener.accesoDenegado("Error de Sistema: no se pudo conectar con la Base de Datos");
+        } else {
+            listener.accesoDenegado("DNI no registrado");
         }
     }
     

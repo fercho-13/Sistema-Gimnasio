@@ -58,7 +58,7 @@ public class ControlAccesoThread extends Thread {
     
     // METODO PARA DETENER HILO DE FORMA MANUAL
     public void detener() {
-        this.activo = false;
-        this.interrupt();
+        activo = false;
+        interrupt();
     }
 }

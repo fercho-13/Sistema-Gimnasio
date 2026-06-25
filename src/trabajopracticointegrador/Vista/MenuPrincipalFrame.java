@@ -49,6 +49,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
 
         btnSocios.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnSocios.setText("Gestion de Socios");
+        btnSocios.addActionListener(this::btnSociosActionPerformed);
 
         btnEmpleados.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnEmpleados.setText("Gestion de Empleados");
@@ -59,6 +60,7 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
 
         btnSalir.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnSalir.setText("Salir");
+        btnSalir.addActionListener(this::btnSalirActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -97,8 +99,22 @@ public class MenuPrincipalFrame extends javax.swing.JFrame {
         
         ControlAccesoFrame ventanaControlAcceso = new ControlAccesoFrame(conn);
         ventanaControlAcceso.setVisible(true);
-        this.dispose();
+        
     }//GEN-LAST:event_btnControlAccesoActionPerformed
+
+    private void btnSociosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSociosActionPerformed
+        // TODO add your handling code here:
+        
+        ListaSocioFrame ventana = new ListaSocioFrame(conn);
+        
+        ventana.setVisible(true);
+    }//GEN-LAST:event_btnSociosActionPerformed
+
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        // TODO add your handling code here:
+        
+        dispose();
+    }//GEN-LAST:event_btnSalirActionPerformed
 
     /**
      * @param args the command line arguments

@@ -60,6 +60,10 @@ public class Empleado extends Persona {
         this.activo = activo;
     }
     
+    public void setCargo (String cargo) {
+        this.cargo = cargo;
+    }
+    
     // METODOS
     
     public void desactivar() {

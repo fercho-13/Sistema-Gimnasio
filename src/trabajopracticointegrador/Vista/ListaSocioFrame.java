@@ -3,6 +3,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package trabajopracticointegrador.Vista;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import trabajopracticointegrador.ConexionDB.Conexion;
+import java.util.ArrayList;
+import trabajopracticointegrador.Suscripcion;
+import trabajopracticointegrador.Socio;
+import trabajopracticointegrador.ConexionDB.SuscripcionDAO;
+
 
 /**
  *
@@ -10,13 +24,19 @@ package trabajopracticointegrador.Vista;
  */
 public class ListaSocioFrame extends javax.swing.JFrame {
     
+    private Conexion conexion;
+    private ArrayList<Suscripcion> planes;
+    private SuscripcionDAO suscripcion_dao;
+    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ListaSocioFrame.class.getName());
 
     /**
      * Creates new form ListaSocioFrame
      */
-    public ListaSocioFrame() {
+    public ListaSocioFrame(Conexion conexion) {
         initComponents();
+        
+        this.conexion = conexion;
     }
 
     /**
@@ -60,6 +80,7 @@ public class ListaSocioFrame extends javax.swing.JFrame {
 
         btnAgregar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnAgregar.setText("Agregar");
+        btnAgregar.addActionListener(this::btnAgregarActionPerformed);
 
         tblSocios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -166,32 +187,54 @@ public class ListaSocioFrame extends javax.swing.JFrame {
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         // TODO add your handling code here:
+        
+        dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        // TODO add your handling code here:
+        
+        JDialog dialog = new JDialog(this, "Datos de socio", true);
+        dialog.setSize(350, 400);
+        dialog.setLayout(new BorderLayout());
+        
+        // PANEL PRINCIPAL CON PADDING
+        JPanel panel = new JPanel(new GridLayout(4, 2, 10, 10));
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        
+        // CAMPOS PARA INGRESO DE DATOS
+        JTextField txtNombre = new JTextField();
+        JTextField txtApellido = new JTextField();
+        JTextField txtDni = new JTextField();
+        JTextField txtDireccion = new JTextField();
+        JTextField txtTelefono = new JTextField();
+        
+        suscripcion_dao = new SuscripcionDAO(conexion);
+        
+        planes = suscripcion_dao.obtenerPlanes();
+        
+        JComboBox cmbPlan = new JComboBox();
+        
+        for (Suscripcion plan : planes) {
+            cmbPlan.addItem(plan.getDescripcion());
+        }
+        
+        // AGREGO EL PANEL AL DIALOG
+        dialog.add(panel, BorderLayout.CENTER);
+
+        // BOTON DE CIERRE
+        JButton botonCierre = new JButton("Cerrar");
+        botonCierre.addActionListener(e -> dialog.dispose());
+        dialog.add(botonCierre, BorderLayout.SOUTH);
+        
+        dialog.setLocationRealtiveTo(this);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_btnAgregarActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new ListaSocioFrame().setVisible(true));
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;

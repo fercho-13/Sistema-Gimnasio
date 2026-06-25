@@ -21,4 +21,10 @@ public interface ControlAccesoInterfaz {
     
     // SOCIO PUEDE INGRESAR PERO DEBE ABONAR LA SUSCRIPCION
     void accesoParcial(Socio socio);
+    
+    // CARGA LOS DATOS DEL SOCIO EN LA LISTA DE SOCIOS DENTRO DEL GIMNASIO
+    void ingresarSocio(Socio socio);
+    
+    // RETIRA AL SOCIO DE LA LISTA DE SOCIOS DENTRO DEL GIMNASIO
+    void retirarSocio(Socio socio);
 }
