@@ -68,7 +68,7 @@ public class EmpleadoDAO {
                     entrenador.setFechaIngreso(rs.getObject("e.FechaIngreso", LocalDate.class));
                     entrenador.setFechaEgreso(rs.getObject("e.FechaEgreso", LocalDate.class));
                     entrenador.setActivo(rs.getBoolean("e.Activo"));
-                    entrenador.setCargo(rs.getString("r.Descripcion"));
+                    entrenador.setRol(rs.getString("r.Descripcion"));
                     entrenador.setMatricula(matricula);
                     
                     empleados.add(entrenador);
@@ -84,7 +84,7 @@ public class EmpleadoDAO {
                     empleado.setFechaIngreso(rs.getObject("e.FechaIngreso", LocalDate.class));
                     empleado.setFechaEgreso(rs.getObject("e.FechaEgreso", LocalDate.class));
                     empleado.setActivo(rs.getBoolean("e.Activo"));
-                    empleado.setCargo(rs.getString("r.Descripcion"));
+                    empleado.setRol(rs.getString("r.Descripcion"));
                     
                     empleados.add(empleado);
                 }                
@@ -95,4 +95,137 @@ public class EmpleadoDAO {
         
         return empleados;
     }
+    
+    public boolean insertarEmpleado(Empleado empleado) {
+        String consulta = "INSERT INTO Personas (Nombre, Apellido, FechaNacimiento, Direccion, DNI, Telefono) VALUES "
+                + "(?, ?, ?, ?, ?, ?); ";
+        
+        try (Connection connection = conn.getConexion()) {
+            
+            connection.setAutoCommit(false);
+            
+            PreparedStatement stmPersona = connection.prepareStatement(consulta);
+            
+            stmPersona.setString(1, empleado.getNombre());
+            stmPersona.setString(2, empleado.getApellido());
+            stmPersona.setObject(3, empleado.getFechaNacimiento());
+            stmPersona.setString(4, empleado.getDireccion());
+            stmPersona.setString(5, empleado.getDNI());
+            stmPersona.setString(6, empleado.getNumeroTelefono());
+            
+            int filasAfectadas = stmPersona.executeUpdate();
+            
+            if (filasAfectadas == 0) {
+                connection.rollback();
+                return false; // HUBO ERROR AL REGISTRAR
+            }
+            
+            int idPersona = 0;
+            
+            consulta = "SELECT * FROM Personas ORDER BY PersonaId DESC LIMIT 1";
+            
+            // OBTENGO ID REGISTRADO DE PERSONA
+            PreparedStatement stmId = connection.prepareStatement(consulta);
+            
+            ResultSet rs = stmId.executeQuery();
+            
+            if (rs.next()) {
+                idPersona = rs.getInt("PersonaId");
+            }
+            
+            if (idPersona == 0) {
+                connection.rollback();
+                return false;
+            }
+            
+            // ID OBTENIDO DE FORMA EXITOSA
+            consulta = "INSERT INTO Empleados (PersonaId, RolId, FechaIngreso) VALUES (?, ?, ?)";
+            
+            PreparedStatement stmEmpleado = connection.prepareStatement(consulta);
+            
+            stmEmpleado.setInt(1, idPersona);
+            stmEmpleado.setInt(2, empleado.getId_rol());
+            stmEmpleado.setObject(3, LocalDate.now());
+            
+            filasAfectadas = stmEmpleado.executeUpdate();
+            
+            if (filasAfectadas == 0) {
+                connection.rollback();
+                return false;
+            }
+            
+            connection.commit();
+        } catch (SQLException ex) {
+            System.getLogger(EmpleadoDAO.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        return true;
+    }
+    
+    public boolean insertarEntrenador(Entrenador entrenador) {
+        String consulta = "INSERT INTO Personas (Nombre, Apellido, FechaNacimiento, Direccion, DNI, Telefono) VALUES "
+                + "(?, ?, ?, ?, ?, ?); ";
+        
+        try (Connection connection = conn.getConexion()) {
+            
+            connection.setAutoCommit(false);
+            
+            PreparedStatement stmPersona = connection.prepareStatement(consulta);
+            
+            stmPersona.setString(1, entrenador.getNombre());
+            stmPersona.setString(2, entrenador.getApellido());
+            stmPersona.setObject(3, entrenador.getFechaNacimiento());
+            stmPersona.setString(4, entrenador.getDireccion());
+            stmPersona.setString(5, entrenador.getDNI());
+            stmPersona.setString(6, entrenador.getNumeroTelefono());
+            
+            int filasAfectadas = stmPersona.executeUpdate();
+            
+            if (filasAfectadas == 0) {
+                connection.rollback();
+                return false; // HUBO ERROR AL REGISTRAR
+            }
+            
+            int idPersona = 0;
+            
+            consulta = "SELECT * FROM Personas ORDER BY PersonaId DESC LIMIT 1";
+            
+            // OBTENGO ID REGISTRADO DE PERSONA
+            PreparedStatement stmId = connection.prepareStatement(consulta);
+            
+            ResultSet rs = stmId.executeQuery();
+            
+            if (rs.next()) {
+                idPersona = rs.getInt("PersonaId");
+            }
+            
+            if (idPersona == 0) {
+                connection.rollback();
+                return false;
+            }
+            
+            // ID OBTENIDO DE FORMA EXITOSA
+            consulta = "INSERT INTO Empleados (PersonaId, RolId, FechaIngreso, Matricula) VALUES (?, ?, ?)";
+            
+            PreparedStatement stmEntrenador = connection.prepareStatement(consulta);
+            
+            stmEntrenador.setInt(1, idPersona);
+            stmEntrenador.setInt(2, entrenador.getId_rol());
+            stmEntrenador.setObject(3, LocalDate.now());
+            stmEntrenador.setString(4, entrenador.getMatricula());
+            
+            filasAfectadas = stmEntrenador.executeUpdate();
+            
+            if (filasAfectadas == 0) {
+                connection.rollback();
+                return false;
+            }
+            
+            connection.commit();
+        } catch (SQLException ex) { 
+            System.getLogger(EmpleadoDAO.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        
+        return true;
+    }
+    
 }

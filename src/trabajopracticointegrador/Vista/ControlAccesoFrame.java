@@ -14,9 +14,14 @@ import javax.swing.JButton;
 import javax.swing.BorderFactory;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
+import java.time.LocalDateTime;
 import java.util.Vector;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
+import trabajopracticointegrador.Ingreso;
+import trabajopracticointegrador.Logica.SocioEntrenandoThread;
+import trabajopracticointegrador.Logica.IngresoRandomThread;
 
 /**
  *
@@ -26,10 +31,14 @@ public class ControlAccesoFrame extends javax.swing.JFrame {
     
     private ControlAcceso control;
     private ControlAccesoListener listener;
-    private Vector<Socio> socios;
+    private Vector<SocioEntrenandoThread> hilos;
+    private SocioEntrenandoThread socio_h;
     private Timer timer;
     private DefaultTableModel modelo;
-    
+    private IngresoRandomThread ingresoRandom;
+    private Conexion conn;
+    private int bucle;
+        
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ControlAccesoFrame.class.getName());
 
     /**
@@ -38,12 +47,16 @@ public class ControlAccesoFrame extends javax.swing.JFrame {
     public ControlAccesoFrame(Conexion conn) {
         initComponents();
         
+        this.conn = conn;
+                
         this.listener = new ControlAccesoListener();
         this.control = new ControlAcceso(listener, conn);
-        socios = new Vector<Socio>();
+        hilos = new Vector<>();
         
         modelo = new DefaultTableModel(new Object[]{"Nombre y apellido", "DNI"}, 0);
         tblSociosIngresados.setModel(modelo);
+                
+        bucle = 0;
         
         timer = new Timer(1000, e -> {
             refrescarTabla();
@@ -68,6 +81,7 @@ public class ControlAccesoFrame extends javax.swing.JFrame {
         btnTablaIngresados = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblSociosIngresados = new javax.swing.JTable();
+        btnDetenerAutomatico = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -82,6 +96,7 @@ public class ControlAccesoFrame extends javax.swing.JFrame {
         btnCerrar.addActionListener(this::btnCerrarActionPerformed);
 
         btnTablaIngresados.setText("Mostrar socios entrenando");
+        btnTablaIngresados.addActionListener(this::btnTablaIngresadosActionPerformed);
 
         tblSociosIngresados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -96,6 +111,9 @@ public class ControlAccesoFrame extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblSociosIngresados);
 
+        btnDetenerAutomatico.setText("Detener simulacion");
+        btnDetenerAutomatico.addActionListener(this::btnDetenerAutomaticoActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -109,14 +127,16 @@ public class ControlAccesoFrame extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtIngresoDni, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 456, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(462, 462, 462))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(btnCerrar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 138, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnTablaIngresados)
-                        .addGap(166, 166, 166)
-                        .addComponent(btnIniciarSimulacion)))
-                .addContainerGap())
+                        .addGap(160, 160, 160)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnIniciarSimulacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnDetenerAutomatico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,7 +145,7 @@ public class ControlAccesoFrame extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
                             .addComponent(txtIngresoDni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -133,8 +153,11 @@ public class ControlAccesoFrame extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnCerrar)
                             .addComponent(btnTablaIngresados)))
-                    .addComponent(btnIniciarSimulacion, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addContainerGap(271, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnIniciarSimulacion)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnDetenerAutomatico)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -143,16 +166,24 @@ public class ControlAccesoFrame extends javax.swing.JFrame {
     private void btnIniciarSimulacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSimulacionActionPerformed
         // TODO add your handling code here:
         
-        
+        if (ingresoRandom != null && ingresoRandom.isAlive()) {
+            JOptionPane.showMessageDialog(this, "El proceso ya se encuentra en funcionamiento", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            ingresoRandom = new IngresoRandomThread(conn, listener);
+            
+            ingresoRandom.start();
+        }
     }//GEN-LAST:event_btnIniciarSimulacionActionPerformed
 
     private void refrescarTabla() {
         modelo.setRowCount(0);
         
+        Vector<SocioEntrenandoThread> hilos_copia = new Vector<>(hilos);
+        
         // SE UTILIZA UN BUCLE FOR TRADICIONAL YA QUE EL FOR EACH ES INTERRUMPIDO POR LOS HILOS
-        for (int i = 0; i < socios.size(); i++) {
-            Socio socio = socios.get(i);
-            modelo.addRow(new Object[]{socio.getNombre() + " " + socio.getApellido(), socio.getDNI()});
+        for (int i = 0; i < hilos.size(); i++) {
+              socio_h = hilos_copia.get(i);
+            modelo.addRow(new Object[]{socio_h.getSocio().getNombre() + " " + socio_h.getSocio().getApellido(), socio_h.getSocio().getDNI()});
         }
     }
     
@@ -168,21 +199,48 @@ public class ControlAccesoFrame extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnCerrarActionPerformed
 
+    private void btnTablaIngresadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTablaIngresadosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnTablaIngresadosActionPerformed
+
+    private void btnDetenerAutomaticoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDetenerAutomaticoActionPerformed
+        // TODO add your handling code here:
+        
+        if (ingresoRandom != null && ingresoRandom.isAlive()) {
+            ingresoRandom.detener();
+        } else {
+            JOptionPane.showMessageDialog(this, "El proceso no se encuentra en funcionamiento", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnDetenerAutomaticoActionPerformed
+
         private class ControlAccesoListener implements ControlAccesoInterfaz {
+            
+            private Ingreso ingreso;
 
             // CONSTRUCTOR
             public ControlAccesoListener() {
-
             }
 
             @Override
-            public void accesoConcedido(Socio socio) {
+            public Ingreso accesoConcedido(Socio socio) {
+                ingreso = new Ingreso();
+                ingreso.setId_socio(socio.getId_Socio());
+                ingreso.setFecha_hora(LocalDateTime.now());
+                ingreso.setAcceso("Pago");
                 dialogAccesoConcedido(socio);
+                
+                return ingreso;
             }
 
             @Override 
-            public void accesoParcial(Socio socio) {
+            public Ingreso accesoParcial(Socio socio) {
+                ingreso = new Ingreso();
+                ingreso.setId_socio(socio.getId_Socio());
+                ingreso.setFecha_hora(LocalDateTime.now());
+                ingreso.setAcceso("No pago");
                 dialogAccesoParcial(socio);
+                
+                return ingreso;
             }
 
             @Override
@@ -191,13 +249,18 @@ public class ControlAccesoFrame extends javax.swing.JFrame {
             }
             
             @Override 
-            public void ingresarSocio(Socio socio) {
-                socios.add(socio);
+            public void ingresarSocio(SocioEntrenandoThread hilo) {
+                hilos.add(hilo);
             }
             
             @Override
-            public void retirarSocio(Socio socio) {
-                socios.remove(socio);
+            public void retirarSocio(SocioEntrenandoThread hilo) {
+                hilos.remove(hilo);
+            }
+            
+            @Override
+            public Vector<SocioEntrenandoThread> getHilosActivos() {
+                return hilos;
             }
         }
     
@@ -311,6 +374,7 @@ public class ControlAccesoFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCerrar;
+    private javax.swing.JButton btnDetenerAutomatico;
     private javax.swing.JButton btnIniciarSimulacion;
     private javax.swing.JButton btnTablaIngresados;
     private javax.swing.JLabel jLabel1;

@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import trabajopracticointegrador.Socio;
 import trabajopracticointegrador.Suscripcion;
 import trabajopracticointegrador.SuscripcionLibre;
 import trabajopracticointegrador.SuscripcionCupo;
@@ -24,6 +25,7 @@ public class SuscripcionDAO {
     
     // ATRIBUTOS
     private Conexion conn;
+    private Connection connection;
     private ResultSet rs;
     private Suscripcion suscripcion;
     private ArrayList<Suscripcion> suscripciones;
@@ -31,6 +33,10 @@ public class SuscripcionDAO {
     // CONSTRUCTOR
     public SuscripcionDAO(Conexion conn) {
         this.conn = conn;
+    }
+    
+    public SuscripcionDAO(Connection connection) {
+        this.connection = connection;
     }
     
     // CONSULTAR SOCIO POR DNI
@@ -89,8 +95,8 @@ public class SuscripcionDAO {
     
     // CONSULTAR TODOS LOS PLANES
     
-    public ArrayList<Suscripcion> obtenerPlanes() throws SQLException {
-        String consulta = "SELECT * FROM Planes";
+    public ArrayList<Suscripcion> obtenerPlanes() {
+        String consulta = "SELECT * FROM Planes WHERE Activo = true";
         
         suscripciones = new ArrayList<Suscripcion>();
         
@@ -105,15 +111,83 @@ public class SuscripcionDAO {
                 
                 suscripcion.setId_plan(rs.getInt("PlanId"));
                 suscripcion.setDescripcion(rs.getString("Descripcion"));
+                suscripcion.setValor(rs.getDouble("Precio"));
                 suscripcion.setCuposTotal(rs.getInt("CantidadCupos"));
-                
+                suscripcion.setDiasTotal(rs.getInt("CantidadDias"));
                 
                 suscripciones.add(suscripcion);
             }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
         
         return suscripciones;
     }
     
     // AGREGAR METODO INSERTAR SUSCRIPCION
+    
+    public boolean insertarSuscripcionLibre(SuscripcionLibre suscripcion, int id_socio) throws SQLException {
+        String consulta = "INSERT INTO Suscripciones (SocioId, PlanId, FechaInicio, FechaFin) VALUES "
+                + "(?, ?, ?, ?)";
+        
+        try (Connection connection = conn.getConexion()) {
+            
+            PreparedStatement stm = connection.prepareStatement(consulta);
+            
+            stm.setInt(1, id_socio);
+            stm.setInt(2, suscripcion.getId_plan());
+            stm.setObject(3, suscripcion.getFechaInicio());
+            stm.setObject(4, suscripcion.getFechaFin());
+            
+            int filasAfectadas = stm.executeUpdate();
+            
+            if (filasAfectadas > 0) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    public boolean insertarSuscripcionCupo(SuscripcionCupo suscripcion, int id_socio) throws SQLException {
+        String consulta = "INSERT INTO Suscripciones (SocioId, PlanId, FechaInicio, FechaFin, CuposRestantes) VALUES "
+                + "(?, ?, ?, ?, ?)";
+        
+        try (Connection connection = conn.getConexion()) {
+            
+            PreparedStatement stm = connection.prepareStatement(consulta);
+            
+            stm.setInt(1, id_socio);
+            stm.setInt(2, suscripcion.getId_plan());
+            stm.setObject(3, suscripcion.getFechaInicio());
+            stm.setObject(4, suscripcion.getFechaFin());
+            stm.setInt(5, suscripcion.getCuposRestantes());
+            
+            int filasAfectadas = stm.executeUpdate();
+            
+            if (filasAfectadas > 0) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    public boolean tieneSuscripcionActiva(int id_socio) throws SQLException{
+        String consulta = "SELECT * FROM Suscripciones WHERE SocioId = ? AND Activo = true";
+        
+        try (Connection connection = conn.getConexion()) {
+            PreparedStatement stm = connection.prepareStatement(consulta);
+            
+            stm.setInt(1, id_socio);
+            
+            ResultSet rs = stm.executeQuery();
+            
+            if (rs.next()) {
+                return true;
+            }
+            
+            return false;
+        }
+    }
 }

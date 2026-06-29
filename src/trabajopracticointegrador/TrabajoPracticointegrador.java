@@ -5,7 +5,6 @@
 package trabajopracticointegrador;
 import trabajopracticointegrador.Logica.ControlAcceso;
 import trabajopracticointegrador.Logica.ControlAccesoInterfaz;
-import trabajopracticointegrador.Logica.probar_consola;
 import trabajopracticointegrador.ConexionDB.Conexion;
 import trabajopracticointegrador.Vista.MenuPrincipalFrame;
 

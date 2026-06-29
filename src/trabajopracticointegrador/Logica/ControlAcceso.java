@@ -8,6 +8,8 @@ import trabajopracticointegrador.Socio;
 import trabajopracticointegrador.ConexionDB.SuscripcionDAO;
 import trabajopracticointegrador.ConexionDB.Conexion;
 import java.sql.SQLException;
+import trabajopracticointegrador.ConexionDB.IngresoDAO;
+import trabajopracticointegrador.Ingreso;
 
 /**
  *
@@ -19,13 +21,16 @@ public class ControlAcceso {
     private final ControlAccesoInterfaz listener;
     private final SocioDAO socio_dao;
     private final SuscripcionDAO suscripcion_dao;
-    private SocioIngresadoSimulador hilo;
+    private final IngresoDAO ingreso_dao;
+    private Ingreso ingreso;
+    private SocioEntrenandoThread hilo;
     
     // CONSTRUCTOR 
     public ControlAcceso(ControlAccesoInterfaz listener, Conexion conn) {
         this.listener = listener;
         this.suscripcion_dao = new SuscripcionDAO(conn);
         this.socio_dao = new SocioDAO(conn, suscripcion_dao);
+        this.ingreso_dao = new IngresoDAO(conn);
     }
     
     // METODO
@@ -35,12 +40,14 @@ public class ControlAcceso {
         if (socio != null) {
             if (socio.getSuscripcion() != null) {
                 if (socio.getSuscripcion().isActivo()) {
-                    listener.accesoConcedido(socio);
+                    ingreso = listener.accesoConcedido(socio);
                 } else {
-                    listener.accesoParcial(socio);
+                    ingreso = listener.accesoParcial(socio);
                 }
                 
-                hilo = new SocioIngresadoSimulador(listener, socio);
+                ingreso_dao.insertarIngreso(ingreso);
+                
+                hilo = new SocioEntrenandoThread(socio, listener);
                 hilo.start();
                 
             } else {

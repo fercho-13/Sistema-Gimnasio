@@ -20,6 +20,7 @@ public class Suscripcion {
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     private int cuposTotal;
+    private int diasTotal;
 
     
     // CONSTRUCTOR VACIO
@@ -70,6 +71,10 @@ public class Suscripcion {
 
     public int getCuposTotal() {
         return cuposTotal;
+    } 
+
+    public int getDiasTotal() {
+        return diasTotal;
     }
     
     // SETTERS
@@ -104,6 +109,10 @@ public class Suscripcion {
 
     public void setCuposTotal(int cuposTotal) {
         this.cuposTotal = cuposTotal;
+    } 
+
+    public void setDiasTotal(int diasTotal) {
+        this.diasTotal = diasTotal;
     }
      
     // METODOS
