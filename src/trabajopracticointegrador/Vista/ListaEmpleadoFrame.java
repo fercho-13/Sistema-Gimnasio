@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import trabajopracticointegrador.ConexionDB.Conexion;
 import trabajopracticointegrador.ConexionDB.EmpleadoDAO;
+
 import trabajopracticointegrador.ConexionDB.RolDAO;
 import trabajopracticointegrador.ConexionDB.SocioDAO;
 import trabajopracticointegrador.ConexionDB.SuscripcionDAO;
@@ -28,31 +29,32 @@ import trabajopracticointegrador.Empleado;
 import trabajopracticointegrador.Entrenador;
 import trabajopracticointegrador.Socio;
 import trabajopracticointegrador.Suscripcion;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author fermi
  */
 public class ListaEmpleadoFrame extends javax.swing.JFrame {
-    
+
     private EmpleadoDAO empleado_dao;
     private RolDAO rol_dao;
     private Conexion conn;
-    
+
     private ArrayList<String> roles;
-    
+
     private Empleado empleado;
     private Entrenador entrenador;
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ListaEmpleadoFrame.class.getName());
 
     /**
      * Creates new form ListaEmpleadoFrame
      */
     public ListaEmpleadoFrame(Conexion conn) {
-        initComponents();
-        
         this.conn = conn;
+        initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -64,152 +66,197 @@ public class ListaEmpleadoFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lblEmpleado = new javax.swing.JLabel();
+        lblBuscarDni = new javax.swing.JLabel();
+        txtBuscarDni = new javax.swing.JTextField();
+        btnBuscar = new javax.swing.JButton();
+        scpEmpleados = new javax.swing.JScrollPane();
+        tblEmpleados = new javax.swing.JTable();
         btnAgregar = new javax.swing.JButton();
+        btnModificar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnVolver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        lblEmpleado.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblEmpleado.setText("LISTA DE EMPLEADOS");
+
+        lblBuscarDni.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblBuscarDni.setText("Buscar DNI:");
+
+        btnBuscar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(this::btnBuscarActionPerformed);
+
+        tblEmpleados.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Nombre", "Apellido", "DNI", "Rol", "Fecha Ingreso", "Activo"
+            }
+        ));
+        tblEmpleados.setToolTipText("");
+        scpEmpleados.setViewportView(tblEmpleados);
+
+        btnAgregar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnAgregar.setText("Agregar");
         btnAgregar.addActionListener(this::btnAgregarActionPerformed);
+
+        btnModificar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnModificar.setText("Modificar");
+        btnModificar.addActionListener(this::btnModificarActionPerformed);
+
+        btnEliminar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(this::btnEliminarActionPerformed);
+
+        btnVolver.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnVolver.setText("Volver");
+        btnVolver.addActionListener(this::btnVolverActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(scpEmpleados, javax.swing.GroupLayout.PREFERRED_SIZE, 699, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(48, Short.MAX_VALUE)
+                        .addComponent(lblBuscarDni)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(148, 148, 148)
+                                .addComponent(lblEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(txtBuscarDni, javax.swing.GroupLayout.PREFERRED_SIZE, 497, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnBuscar)))
+                .addGap(42, 42, 42))
             .addGroup(layout.createSequentialGroup()
-                .addGap(42, 42, 42)
+                .addGap(219, 219, 219)
                 .addComponent(btnAgregar)
-                .addContainerGap(285, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnModificar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEliminar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnVolver)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(263, Short.MAX_VALUE)
-                .addComponent(btnAgregar)
-                .addGap(14, 14, 14))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(52, 52, 52)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtBuscarDni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblBuscarDni)
+                            .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(scpEmpleados, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnAgregar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnModificar)
+                        .addComponent(btnEliminar)
+                        .addComponent(btnVolver)))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        // TODO add your handling code here:
+
+        empleado_dao = new EmpleadoDAO(conn);
+
+        ArrayList<Empleado> empleados = empleado_dao.obtenerEmpleados();
+
+        DefaultTableModel modelo = (DefaultTableModel) tblEmpleados.getModel();
+        modelo.setRowCount(0);
+
+        for (Empleado empleado : empleados) {
+            modelo.addRow(new Object[]{
+                empleado.getNombre(),
+                empleado.getApellido(),
+                empleado.getDNI(),
+                empleado.getRol(),
+                empleado.getFechaIngreso(),
+                empleado.isActivo()
+            });
+        }
+
+        if (empleados.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No hay empleados registrados");
+        }
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
-        
-        JDialog dialog = new JDialog(this, "Datos de empleado", true);
-        dialog.setSize(500, 550);
-        dialog.setLayout(new BorderLayout());
-        
-        // PANEL PRINCIPAL CON PADDING
-        JPanel panel = new JPanel(new GridLayout(8, 2, 10, 10));
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        
-        // CAMPOS PARA INGRESO DE DATOS
-        JTextField txtNombre = new JTextField();
-        JTextField txtApellido = new JTextField();
-        JTextField txtFechaNacimiento = new JTextField();
-        JTextField txtDni = new JTextField();
-        JTextField txtDireccion = new JTextField();
-        JTextField txtTelefono = new JTextField();
-        
-        DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        
-        empleado_dao = new EmpleadoDAO(conn);
-        rol_dao = new RolDAO(conn);
-        
-        roles = rol_dao.obtenerRoles();
-        
-        JComboBox cmbRol = new JComboBox();
-        
-        for (String rol : roles) {
-            cmbRol.addItem(rol);
-        }
-        
-        panel.add(new JLabel("Nombre"));
-        panel.add(txtNombre);
-        
-        panel.add(new JLabel("Apellido"));
-        panel.add(txtApellido);
-        
-        panel.add(new JLabel("DNI"));
-        panel.add(txtDni);
-        
-        panel.add(new JLabel("Fecha de nacimiento (dd/MM/aaaa)"));
-        panel.add(txtFechaNacimiento);
-        
-        panel.add(new JLabel("Direccion"));
-        panel.add(txtDireccion);
-        
-        panel.add(new JLabel("Numero de telefono"));
-        panel.add(txtTelefono);
-        
-        panel.add(new JLabel("Rol"));
-        panel.add(cmbRol);
-        
-        // AGREGO EL PANEL AL DIALOG
-        dialog.add(panel, BorderLayout.CENTER);
-        
-        // PANEL PARA BOTONES
-        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        
-        // BOTON GUARDAR 
-        JButton botonGuardar = new JButton("Guardar");
-        botonGuardar.addActionListener(e -> {
-            empleado = new Empleado();
-            
-            empleado.setNombre(txtNombre.getText().trim());
-            empleado.setApellido(txtApellido.getText().trim());
-            empleado.setDNI(txtDni.getText().trim());
-            empleado.setFechaNacimiento(LocalDate.parse(txtFechaNacimiento.getText().trim(), formateador));
-            empleado.setDireccion(txtDireccion.getText().trim());
-            empleado.setNumeroTelefono(txtTelefono.getText().trim());
-            
-            String rol_seleccionado = cmbRol.getSelectedItem().toString();
-            boolean plan_encontrado = false;
-            
-            for (Suscripcion plan : planes) {
-                if (plan.getDescripcion().equals(plan_descripcion)) {
-                    asignarDatosPlan(plan);
-                    socio.setSuscripcion(suscripcion);
-                    plan_encontrado = true;
-                    break;
-                }
-            }
-            
-            if (plan_encontrado == true) {
-                try {
-                    if (socio_dao.insertarSocio(socio) == true) {
-                        JOptionPane.showMessageDialog(dialog, "Socio " + socio.getApellido() + " registrado correctamente.", "Operación Exitosa", JOptionPane.INFORMATION_MESSAGE);
-                    } else {
-                        JOptionPane.showMessageDialog(dialog, "Error crítico al intentar guardar en la Base de Datos.", "Error de Persistencia", JOptionPane.ERROR_MESSAGE);
-                    }
-                } catch (SQLException ex) {
-                    System.getLogger(ListaSocioFrame.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-                }
-                
-                
-            } else {
-                JOptionPane.showMessageDialog(dialog, "Error interno: No se pudo mapear la suscripción.", "Error Técnico", JOptionPane.ERROR_MESSAGE);
-            }
-        });
-        panelBotones.add(botonGuardar);
-        
-        // BOTON DE CIERRE
-        JButton botonCierre = new JButton("Cerrar");
-        botonCierre.addActionListener(e -> dialog.dispose());
-        panelBotones.add(botonCierre);
-        
-        // AGREGO EL PANEL DE BOTONES AL DIALOG
-        dialog.add(panelBotones, BorderLayout.SOUTH);
-        
-        dialog.setLocationRelativeTo(this);
-        dialog.setVisible(true);
+
+        JOptionPane.showMessageDialog(
+                this,
+                "Funcionalidad Agregar Empleado pendiente"
+        );
     }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(
+                this,
+                "Funcionalidad Modificar Empleado pendiente"
+        );
+    }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+
+        JOptionPane.showMessageDialog(
+                this,
+                "Funcionalidad Eliminar Empleado pendiente"
+        );
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+        // TODO add your handling code here:
+
+        MenuPrincipalFrame menu = new MenuPrincipalFrame(conn);
+        menu.setVisible(true);
+
+        this.dispose();
+    }//GEN-LAST:event_btnVolverActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnModificar;
+    private javax.swing.JButton btnVolver;
+    private javax.swing.JLabel lblBuscarDni;
+    private javax.swing.JLabel lblEmpleado;
+    private javax.swing.JScrollPane scpEmpleados;
+    private javax.swing.JTable tblEmpleados;
+    private javax.swing.JTextField txtBuscarDni;
     // End of variables declaration//GEN-END:variables
 }
